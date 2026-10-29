@@ -1,0 +1,49 @@
+{
+  "_note": "Country profile facts supplied by the Central Asia Center (Oct 2026). Edit values here; labels and sources are defined once in 'fields'. null = not available.",
+  "fields": [
+    { "key": "population", "label": "Population (2025)", "format": "people", "source": "CIA World Factbook" },
+    { "key": "gdpNominal", "label": "GDP, nominal (2025)", "format": "usd", "source": "World Bank, GDP (current US$)" },
+    { "key": "gdpGrowth", "label": "GDP growth (2025)", "format": "pct", "source": "World Bank, GDP growth (annual %)" },
+    { "key": "gdpPpp", "label": "GDP, PPP (2025)", "format": "intl", "source": "World Bank, GDP, PPP (current international $)" },
+    { "key": "gdpPppPerCapita", "label": "GDP per capita, PPP (2025)", "format": "intlExact", "source": "World Bank, GDP per capita, PPP (current international $)" },
+    { "key": "military", "label": "Military expenditure (2025)", "format": "usd", "source": "SIPRI Military Expenditure Database" },
+    { "key": "inflation", "label": "Inflation, consumer prices (2025)", "format": "pct", "source": "World Bank, Inflation, consumer prices (annual %)" },
+    { "key": "freedomHouse", "label": "Freedom House score", "format": "outOf100", "hint": "Freedom in the World 2026. Higher is freer.", "source": "Freedom House, Freedom in the World 2026" },
+    { "key": "gini", "label": "Gini coefficient", "format": "gini", "hint": "Higher means more inequality.", "source": "Our World in Data, Gini coefficient" },
+    { "key": "cpi", "label": "Corruption Perceptions Index (2025)", "format": "cpi", "hint": "Score out of 100 (higher is cleaner) and global rank (lower is better).", "source": "Transparency International, Corruption Perceptions Index 2025" },
+    { "key": "ociCriminality", "label": "Organized crime: criminality", "format": "outOf10", "hint": "Global Organized Crime Index 2025. Higher means more criminality.", "source": "Global Organized Crime Index 2025, country report" },
+    { "key": "ociResilience", "label": "Organized crime: resilience", "format": "outOf10", "hint": "Global Organized Crime Index 2025. Higher means stronger resilience.", "source": "Global Organized Crime Index 2025, country report" }
+  ],
+  "countries": {
+    "Kazakhstan": {
+      "leader": { "title": "President", "name": "Kassym-Jomart Tokayev", "source": "Official website of the President of the Republic of Kazakhstan" },
+      "population": 20400000, "gdpNominal": 306240000000, "gdpGrowth": 6.5, "gdpPpp": 923240000000, "gdpPppPerCapita": 44293,
+      "military": 1306300000, "inflation": 11.39, "freedomHouse": 23, "gini": 0.29, "cpi": { "score": 38, "rank": 96 },
+      "ociCriminality": 4.45, "ociResilience": 4.67
+    },
+    "Kyrgyzstan": {
+      "leader": { "title": "President", "name": "Sadyr Japarov", "source": "Official website of the President of the Kyrgyz Republic" },
+      "population": 6200000, "gdpNominal": 22620000000, "gdpGrowth": 11.1, "gdpPpp": 67700000000, "gdpPppPerCapita": 9220,
+      "military": 557800000, "inflation": 8.21, "freedomHouse": 25, "gini": 0.28, "cpi": { "score": 26, "rank": 142 },
+      "ociCriminality": 5.25, "ociResilience": 3.79
+    },
+    "Tajikistan": {
+      "leader": { "title": "President", "name": "Emomali Rahmon", "source": "Embassy of the Republic of Tajikistan in Malaysia" },
+      "population": 10600000, "gdpNominal": 17660000000, "gdpGrowth": 8.4, "gdpPpp": 63890000000, "gdpPppPerCapita": 5923,
+      "military": 219800000, "inflation": null, "freedomHouse": 5, "gini": 0.36, "cpi": { "score": 19, "rank": 166 },
+      "ociCriminality": 5.37, "ociResilience": 2.54
+    },
+    "Turkmenistan": {
+      "leader": { "title": "President", "name": "Serdar Berdimuhamedow", "note": "His father, former president Gurbanguly Berdimuhamedow, retains significant power as \"National Leader\".", "source": "Planet Rulers, President of Turkmenistan" },
+      "population": 5700000, "gdpNominal": 49830000000, "gdpGrowth": 6.3, "gdpPpp": 172200000000, "gdpPppPerCapita": 22602,
+      "military": null, "inflation": null, "freedomHouse": 1, "gini": null, "cpi": { "score": 17, "rank": 167 },
+      "ociCriminality": 4.35, "ociResilience": 2.17
+    },
+    "Uzbekistan": {
+      "leader": { "title": "President", "name": "Shavkat Mirziyoyev", "source": "Official website of the President of the Republic of Uzbekistan" },
+      "population": 37000000, "gdpNominal": 147040000000, "gdpGrowth": 7.7, "gdpPpp": 503970000000, "gdpPppPerCapita": 13601,
+      "military": null, "inflation": 8.8, "freedomHouse": 12, "gini": 0.33, "cpi": { "score": 31, "rank": 124 },
+      "ociCriminality": 4.93, "ociResilience": 3.83
+    }
+  }
+}
