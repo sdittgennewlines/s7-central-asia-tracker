@@ -3,7 +3,7 @@
  * newest first, narrowed by the selected country and the filters below.
  * The filters also drive the map's bubble counts and rings.
  *
- *   Sector chips   multi-select, coloured like the map's rings
+ *   Sectors        checkboxes, coloured like the map's rings
  *   Actor          Russia / China / United States / S7+ states
  *   Period         all time or one month
  *   Search         title and description text
@@ -36,13 +36,20 @@ export function createFeed(ctx) {
   const setFilters = (patch) => { shown = PAGE; store.set({ filters: { ...store.get().filters, ...patch } }); };
 
   /* ---- controls (built once) ---- */
-  sectorBox.innerHTML = cfg.sectors.map((s) =>
-    `<button class="sector-chip" data-s="${esc(s.key)}" style="--c:${s.color}"><i></i>${esc(s.label)}</button>`).join("");
-  sectorBox.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
-    const cur = new Set(store.get().filters.sectors);
-    cur.has(b.dataset.s) ? cur.delete(b.dataset.s) : cur.add(b.dataset.s);
-    setFilters({ sectors: cfg.sectors.map((s) => s.key).filter((k) => cur.has(k)) });
+  // Sector checkboxes: checked = included. All checked is stored as null.
+  const allKeys = cfg.sectors.map((s) => s.key);
+  sectorBox.innerHTML = `
+    <legend class="fs-title">Sectors</legend>
+    <div class="fs-actions"><button type="button" class="link-btn" data-all="1">Select all</button><button type="button" class="link-btn" data-all="0">Clear</button></div>
+    <div class="fs-grid">${cfg.sectors.map((s) => `
+      <label class="fs-item"><input type="checkbox" value="${esc(s.key)}" checked><i style="background:${s.color}"></i>${esc(s.label)}</label>`).join("")}
+    </div>`;
+  const boxes = [...sectorBox.querySelectorAll("input")];
+  boxes.forEach((b) => b.addEventListener("change", () => {
+    const on = boxes.filter((x) => x.checked).map((x) => x.value);
+    setFilters({ sectors: on.length === allKeys.length ? null : on });
   }));
+  sectorBox.querySelectorAll("[data-all]").forEach((b) => b.addEventListener("click", () => setFilters({ sectors: b.dataset.all === "1" ? null : [] })));
   actorSel.innerHTML = `<option value="all">All actors</option>` + cfg.indices.map((ix) => `<option value="${ix.actor}">${esc(ix.actorLabel)}</option>`).join("");
   periodSel.innerHTML = `<option value="all">All time</option>` + [...months].reverse().map((m) => `<option value="${m}">${monthLabel(m)}</option>`).join("");
   actorSel.addEventListener("change", () => setFilters({ actor: actorSel.value }));
@@ -58,10 +65,9 @@ export function createFeed(ctx) {
   list.addEventListener("click", (e) => e.target.closest(".feed-desc")?.classList.toggle("is-open"));
   list.addEventListener("keydown", (e) => { if (e.key === "Enter") e.target.closest(".feed-desc")?.classList.toggle("is-open"); });
 
-  /** Severity badge: coloured square with the level and its label. */
+  /** Severity badge: "Severity: 3", with the number on its severity colour. */
   function badge(sev) {
-    const label = sev == null ? "Unrated" : cfg.severityLevels[Math.max(1, sev)].label;
-    return `<span class="sev"><span class="sev-num" style="background:${severityColor(cfg, sev)};color:${sev >= 3 ? "#fff" : "#1B1725"}">${sev ?? "–"}</span>${esc(label)}</span>`;
+    return `<span class="sev">Severity: <span class="sev-num" style="background:${severityColor(cfg, sev)};color:${sev >= 3 ? "#fff" : "#1B1725"}">${sev ?? "–"}</span></span>`;
   }
 
   /** One incident. */
@@ -80,7 +86,7 @@ export function createFeed(ctx) {
   function render(state) {
     const f = state.filters;
     // Sync controls.
-    sectorBox.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(f.sectors.includes(b.dataset.s))));
+    boxes.forEach((b) => { b.checked = !f.sectors || f.sectors.includes(b.value); });
     actorSel.value = f.actor; periodSel.value = f.period;
     if (search.value !== f.search) search.value = f.search;
 
@@ -94,7 +100,7 @@ export function createFeed(ctx) {
       const k = b.dataset.clear;
       if (k === "country") store.set({ country: null });
       else if (k === "location") setFilters({ location: null });
-      else setFilters({ sectors: [], actor: "all", period: "all", search: "" });
+      else setFilters({ sectors: null, actor: "all", period: "all", search: "" });
     }));
 
     const rows = feedIncidents(incidents, state).sort((a, b) => b.date.localeCompare(a.date) || b.row - a.row);

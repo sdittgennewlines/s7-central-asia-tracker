@@ -8,7 +8,8 @@
  * countries when none is selected).
  *
  * Filter shape (state.filters):
- *   sectors   []          sector keys to keep; empty array = all sectors
+ *   sectors   null        null = all sectors; otherwise the array of sector
+ *                         keys to keep (the checked boxes). [] = none.
  *   actor     "all"       or an actor key (Russia, China, USA, S7)
  *   period    "all"       or a month key ("2026-10")
  *   search    ""          free text matched against title + description
@@ -18,7 +19,7 @@ import { locationKey } from "./data.js";
 
 /** True if the incident passes the sector/actor/period/search filters. */
 export function passes(inc, f) {
-  if (f.sectors.length && !inc.types.some((t) => f.sectors.includes(t))) return false;
+  if (f.sectors && !inc.types.some((t) => f.sectors.includes(t))) return false;
   if (f.actor !== "all" && !inc.actors.includes(f.actor)) return false;
   if (f.period !== "all" && !inc.date.startsWith(f.period)) return false;
   const q = f.search.trim().toLowerCase();
@@ -28,7 +29,7 @@ export function passes(inc, f) {
 
 /** Sectors of an incident that count under the current sector filter. */
 export function visibleSectors(inc, f) {
-  return f.sectors.length ? inc.types.filter((t) => f.sectors.includes(t)) : inc.types;
+  return f.sectors ? inc.types.filter((t) => f.sectors.includes(t)) : inc.types;
 }
 
 /** Incidents for the feed: filters + selected country (or picked location). */
@@ -43,5 +44,5 @@ export function feedIncidents(incidents, state) {
 
 /** True when any filter is narrowing the incidents. */
 export function isFiltered(f) {
-  return f.sectors.length > 0 || f.actor !== "all" || f.period !== "all" || !!f.search.trim() || !!f.location;
+  return f.sectors !== null || f.actor !== "all" || f.period !== "all" || !!f.search.trim() || !!f.location;
 }

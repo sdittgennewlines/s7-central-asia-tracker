@@ -14,7 +14,7 @@
  *
  * Reads:  state.country, state.filters
  * Writes: country (click a country or bubble), filters.location (click a pin)
- * DOM:    #map, #mapCaption, #mapLegend
+ * DOM:    #map
  */
 import { byId, esc, plural } from "../util.js";
 import { locationKey, REGION_WIDE } from "../data.js";
@@ -57,11 +57,10 @@ const PINS = {
   [REGION_WIDE]: [88.6, 55.35, "", "", "end"]
 };
 
-// Bubble size: area proportional to count. A bubble with MAX_REF incidents
-// gets radius R_MAX; the scale is fixed so sizes stay comparable as filters change.
-const R_MIN = 9, R_MAX = 46, MAX_REF = 160;
-const RING = 8;  // ring thickness
-const GAP = 2;   // gap between ring segments, in SVG units
+// Bubble size: area proportional to count, on a fixed scale so sizes stay
+// comparable as filters change. R is the OUTER radius (core + ring).
+const R_MIN = 16, R_MAX = 58, MAX_REF = 160;
+const CORE = 0.64; // core radius as a share of the outer radius; the rest is the ring
 
 /* ------------------------------------------------------- SVG helpers */
 
@@ -83,8 +82,6 @@ const toPath = (f) => f.geometry.coordinates.map((poly) =>
 export function createMap(ctx) {
   const { cfg, incidents, geo, store } = ctx;
   const el = byId("map");
-  const caption = byId("mapCaption");
-  const legend = byId("mapLegend");
   const sectorLabel = Object.fromEntries(cfg.sectors.map((s) => [s.key, s.label]));
 
   // Country outlines are drawn from the same paths every time; compute once.
@@ -109,43 +106,34 @@ export function createMap(ctx) {
     return { byCountry, outside };
   }
 
-  /** The legend: one swatch per sector, plus a note on what the bubble means. */
-  function renderLegend(f) {
-    legend.innerHTML = `<span class="map-legend-title">Ring: incidents by sector</span>` +
-      cfg.sectors.map((s) => {
-        const off = f.sectors.length && !f.sectors.includes(s.key);
-        return `<span class="map-legend-item${off ? " is-off" : ""}"><i style="background:${s.color}"></i>${esc(s.label)}</span>`;
-      }).join("");
-  }
-
-  /** One country bubble with its ring, number and name. */
+  /**
+   * One country: a dark core with the incident count, wrapped in a thick
+   * ring whose segments are the sector shares (clockwise from 12 o'clock,
+   * in config order). The country name sits underneath.
+   */
   function bubble(c, t, selected) {
     const [cx, cy] = project(...BUBBLE_AT[c]);
-    const r = t.n ? R_MIN + (R_MAX - R_MIN) * Math.sqrt(Math.min(t.n, MAX_REF) / MAX_REF) : 7;
-    const r0 = r + 2, r1 = r + 2 + RING;
+    const R = t.n ? R_MIN + (R_MAX - R_MIN) * Math.sqrt(Math.min(t.n, MAX_REF) / MAX_REF) : R_MIN * 0.75;
+    const r = R * CORE;
     const out = [`<g class="map-bubble${selected ? " is-selected" : ""}" data-country="${c}" tabindex="0" role="button" aria-label="${c}: ${plural(t.n, "incident")}">`];
 
-    // Ring segments, in config order, clockwise from 12 o'clock.
+    // Ring: a neutral track, then one solid segment per sector.
+    out.push(`<circle class="map-ring-track" cx="${cx}" cy="${cy}" r="${(R + r) / 2}" stroke-width="${R - r}"/>`);
     const total = Object.values(t.sectors).reduce((a, b) => a + b, 0);
-    if (total) {
-      const segs = cfg.sectors.filter((s) => t.sectors[s.key]);
-      const gapA = segs.length > 1 ? GAP / ((r0 + r1) / 2) : 0;
-      let a = 0;
-      segs.forEach((s) => {
-        const span = (t.sectors[s.key] / total) * Math.PI * 2;
-        const a0 = a + gapA / 2, a1 = a + span - gapA / 2;
-        if (segs.length === 1) out.push(`<circle cx="${cx}" cy="${cy}" r="${(r0 + r1) / 2}" fill="none" stroke="${s.color}" stroke-width="${RING}"/>`);
-        else if (a1 > a0) out.push(`<path d="${arcPath(cx, cy, r0, r1, a0, a1)}" fill="${s.color}"/>`);
-        a += span;
-      });
-    } else {
-      out.push(`<circle cx="${cx}" cy="${cy}" r="${(r0 + r1) / 2}" fill="none" stroke="#C9C6CE" stroke-width="1" stroke-dasharray="3 3"/>`);
-    }
+    let a = 0;
+    cfg.sectors.filter((sec) => t.sectors[sec.key]).forEach((sec, i, segs) => {
+      const span = (t.sectors[sec.key] / total) * Math.PI * 2;
+      out.push(segs.length === 1
+        ? `<circle cx="${cx}" cy="${cy}" r="${(R + r) / 2}" fill="none" stroke="${sec.color}" stroke-width="${R - r}"/>`
+        : `<path d="${arcPath(cx, cy, r, R, a, a + span)}" fill="${sec.color}"/>`);
+      a += span;
+    });
 
-    // Bubble, number, name.
-    out.push(`<circle class="map-bubble-core" cx="${cx}" cy="${cy}" r="${r}"/>`);
-    out.push(`<text class="map-bubble-n" x="${cx}" y="${cy}" dy=".35em" text-anchor="middle" font-size="${Math.max(11, Math.min(22, r * 0.62)).toFixed(0)}">${t.n}</text>`);
-    out.push(`<text class="map-bubble-name" x="${cx}" y="${(cy + r1 + 15).toFixed(0)}" text-anchor="middle">${c}</text>`);
+    // Core, number, outline when selected, name.
+    out.push(`<circle class="map-bubble-core" cx="${cx}" cy="${cy}" r="${r.toFixed(1)}"/>`);
+    out.push(`<text class="map-bubble-n" x="${cx}" y="${cy}" dy=".35em" text-anchor="middle" font-size="${Math.max(12, r * 0.95).toFixed(0)}">${t.n}</text>`);
+    if (selected) out.push(`<circle class="map-bubble-sel" cx="${cx}" cy="${cy}" r="${(R + 3).toFixed(1)}"/>`);
+    out.push(`<text class="map-bubble-name" x="${cx}" y="${(cy + R + 15).toFixed(0)}" text-anchor="middle">${c}</text>`);
     out.push(`</g>`);
     return out.join("");
   }
@@ -164,8 +152,6 @@ export function createMap(ctx) {
     const f = state.filters;
     const { byCountry, outside } = tally(f);
     const shown = Object.values(byCountry).reduce((a, t) => a + t.n, 0) + Object.values(outside).reduce((a, b) => a + b, 0);
-    caption.textContent = `${plural(shown, "incident")}${isFiltered(f) ? " match the feed filters" : " logged so far"}. Select a country to see its profile and indices.`;
-    renderLegend(f);
 
     if (!geo) { el.innerHTML = `<p class="map-fallback">The map could not load. The rest of the tracker is unaffected.</p>`; return; }
 
@@ -184,6 +170,8 @@ export function createMap(ctx) {
     // 4. Pins for outside places.
     let stacked = 0;
     Object.keys(outside).sort((a, b) => outside[b] - outside[a]).forEach((k) => svg.push(pin(k, outside[k], PINS[k] ? 0 : stacked++, f.location === k)));
+    // 5. A one-line key in the corner (the sector colours are keyed by the feed's checkboxes).
+    svg.push(`<text class="map-key" x="14" y="${H - 14}">${plural(shown, "incident")}${isFiltered(f) ? " match the filters" : ""} · number = incidents · ring = share by sector</text>`);
     svg.push("</g></svg>");
     el.innerHTML = svg.join("");
 

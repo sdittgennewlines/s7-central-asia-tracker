@@ -53,7 +53,7 @@ async function start() {
   const months = monthsIn(inc.incidents);
   const store = createStore({
     country: CONFIG.defaultCountry,
-    filters: { sectors: [], actor: "all", period: "all", search: "", location: null },
+    filters: { sectors: null, actor: "all", period: "all", search: "", location: null },
     window: { end: months[months.length - 1], span: "1" },
     range: "all",
     indices: CONFIG.indices.map((ix) => ix.key)

@@ -37,8 +37,6 @@
   <section class="hero">
     <span class="eyebrow">CENTRAL ASIA CENTER</span>
     <h1>S7+ Central Asia Geopolitical Tracker</h1>
-    <p class="lede">For decades, analysis of Central Asia has treated the region as a chessboard for great power competition rather than as a set of sovereign states with their own interests and agency. The S7+ framework asks a different question: not which outside power dominates, but whether the region can build the internal cohesion and external leverage to chart its own course.</p>
-    <p class="lede-2">The S7+ Central Asia Geopolitical Tracker (S7+CAT) measures the balance between integration, sovereignty and external influence across the region. Month by month, it tracks how trade dependencies, infrastructure investment, security arrangements and institutional ties shape each state's strategic autonomy, through four indices: Russian influence, Chinese influence, U.S. engagement and S7+ integration readiness.</p>
   </section>
 
   <p class="tracker-error" id="trackerError" hidden>The tracker data could not be loaded. Please refresh the page.</p>
@@ -51,12 +49,8 @@
 
     <!-- Row 1, left: map -->
     <section class="cell cell-map" aria-labelledby="mapTitle">
-      <div class="block-head">
-        <h2 id="mapTitle">Incident map</h2>
-        <p class="sub" id="mapCaption"></p>
-      </div>
+      <h2 class="sr-only" id="mapTitle">Incident map</h2>
       <div class="map" id="map" role="img" aria-label="Map of Central Asia with one bubble per country sized by incident count, ringed by sector"></div>
-      <div class="map-legend" id="mapLegend"></div>
     </section>
 
     <!-- Row 1, right: incident feed -->
@@ -66,7 +60,7 @@
           <h2 id="feedTitle">Incident feed</h2>
           <p class="sub" id="feedSummary"></p>
         </div>
-        <div class="feed-sectors" id="feedSectors" role="group" aria-label="Filter by sector"></div>
+        <fieldset class="feed-sectors" id="feedSectors"><legend class="sr-only">Filter by sector</legend></fieldset>
         <div class="feed-filters">
           <label class="sr-only" for="feedActor">Actor</label><select id="feedActor"></select>
           <label class="sr-only" for="feedPeriod">Period</label><select id="feedPeriod"></select>

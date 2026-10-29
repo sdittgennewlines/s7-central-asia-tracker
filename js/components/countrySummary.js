@@ -9,27 +9,11 @@
  * Reads:  state.country
  * Writes: country (prompt buttons, clear button)
  * DOM:    #countrySummary
- * Data:   data/countries.json ("fields" defines labels/format/source once;
- *         "countries" holds each country's values)
+ * Data:   data/countries.json ("fields" defines labels and sources once;
+ *         "countries" holds each country's values as plain text, shown
+ *         exactly as written: no reformatting)
  */
-import { byId, esc, fmtMoney, fmtPeople } from "../util.js";
-
-/** Format one value according to its field's `format`. Returns null when missing. */
-function formatValue(format, v) {
-  if (v == null) return null;
-  switch (format) {
-    case "people": return fmtPeople(v);
-    case "usd": return fmtMoney(v);
-    case "intl": return fmtMoney(v, "Int$");
-    case "intlExact": return `Int$${v.toLocaleString("en-US")}`;
-    case "pct": return `${v}%`;
-    case "outOf100": return `${v}<small>/100</small>`;
-    case "outOf10": return `${v.toFixed(2)}<small>/10</small>`;
-    case "gini": return v.toFixed(2);
-    case "cpi": return `${v.score}<small>/100 · rank ${v.rank}</small>`;
-    default: return esc(v);
-  }
-}
+import { byId, esc } from "../util.js";
 
 export function createCountrySummary(ctx) {
   const { cfg, profiles, store } = ctx;
@@ -52,8 +36,8 @@ export function createCountrySummary(ctx) {
     const p = profiles?.countries?.[c];
 
     const facts = (profiles?.fields || []).map((f) => {
-      const val = p ? formatValue(f.format, p[f.key]) : null;
-      return `<div class="cs-fact"${f.hint ? ` title="${esc(f.hint)}"` : ""}><dt>${esc(f.label)}</dt><dd${val == null ? ' class="is-na"' : ""}>${val ?? "Not available"}</dd></div>`;
+      const val = p?.[f.key] ?? "N/A";
+      return `<div class="cs-fact"${f.hint ? ` title="${esc(f.hint)}"` : ""}><dt>${esc(f.label)}</dt><dd${val === "N/A" ? ' class="is-na"' : ""}>${esc(val)}</dd></div>`;
     }).join("");
     const sources = p ? [`Head of state: ${p.leader.source}`, ...profiles.fields.map((f) => `${f.label}: ${f.source}`)] : [];
 
