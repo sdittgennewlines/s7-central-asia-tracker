@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S7+ Central Asia Tracker | New Lines Institute</title>
+<meta name="description" content="Tracking Russian, Chinese, U.S. and S7 engagement across Central Asia, incident by incident. A Central Asia Center monitor from the New Lines Institute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="s7cat">
+<div class="frame">
+
+<header class="site-header" data-chrome>
+  <a class="logo" href="https://newlinesinstitute.org/" aria-label="New Lines Institute home">
+    <svg width="30" height="60" viewBox="0 0 35 68" aria-hidden="true"><path d="M34.0628 67.7056V0.136103H33.5767V26.4475C33.3355 27.9488 32.7443 28.9639 31.842 29.3295C31.033 29.6562 30.0101 29.415 28.9133 28.6877L10.1123 9.85556L9.77002 10.2017L28.5205 28.9678C29.3256 30.1112 29.6018 31.173 29.2556 32.0248C28.9095 32.8766 27.9566 33.4638 26.5564 33.7283H0V34.2262H26.6303C27.9916 34.4984 28.9211 35.0779 29.2556 35.918C29.5901 36.7581 29.3723 37.6643 28.7111 38.7067L9.77002 57.6439L10.1162 57.99L28.96 39.1501C30.0374 38.4461 31.0447 38.2127 31.842 38.5394C32.7443 38.905 33.3355 39.9201 33.5767 41.4214V67.7134L34.0628 67.7056Z" fill="currentColor"/></svg>
+    <span class="logo-text"><span>NEW LINES</span><span>INSTITUTE</span><small>FOR STRATEGY AND POLICY</small></span>
+  </a>
+  <nav class="breadcrumb" aria-label="Breadcrumb"><span>CENTRAL ASIA CENTER</span><span class="pipe" aria-hidden="true">|</span><strong>S7+ CENTRAL ASIA TRACKER</strong></nav>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">CENTRAL ASIA CENTER · MONITOR</span>
+  <h1>S7+ Central Asia Tracker</h1>
+  <p class="lede">Where outside influence in Central Asia comes from, and how much it matters. Our analysts log each incident involving Russia, China, the United States or other S7 states, and rate its severity from 1 to 4. Those ratings roll up into a monthly severity score for each of the five Central Asian republics.</p>
+</section>
+
+<div class="controls" role="region" aria-label="Filters">
+  <div class="period">
+    <button class="icon-btn" id="prevPeriod" aria-label="Previous month">‹</button>
+    <label class="sr-only" for="periodSelect">Period</label>
+    <select id="periodSelect"></select>
+    <button class="icon-btn" id="nextPeriod" aria-label="Next month">›</button>
+  </div>
+  <div class="seg" role="group" aria-label="Actor" id="actorSeg"></div>
+  <label class="field"><span>Sector</span><select id="sectorSelect"></select></label>
+  <label class="field"><span>Country</span><select id="countrySelect"></select></label>
+  <button class="link-btn" id="resetBtn" hidden>Clear filters</button>
+</div>
+
+<section class="cards" id="countryCards" aria-label="Severity score by country"></section>
+
+<section class="map-section">
+  <div class="section-head">
+    <div>
+      <h2>Severity map</h2>
+      <p class="sub" id="mapSub"></p>
+    </div>
+    <div class="legend" id="mapLegend"></div>
+  </div>
+  <div class="map-wrap">
+    <div class="map" id="map" role="img" aria-label="Map of Central Asia shaded by severity score, with incident markers"></div>
+    <aside class="panel" id="sidePanel" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section class="charts">
+  <div class="chart-block wide">
+    <div class="chart-head">
+      <h3>Severity by country and actor</h3>
+      <p class="sub" id="heatSub"></p>
+    </div>
+    <div id="heatmap"></div>
+  </div>
+  <div class="chart-block">
+    <div class="chart-head">
+      <h3 id="trendTitle">Monthly severity, by actor</h3>
+      <p class="sub" id="trendSub"></p>
+    </div>
+    <div id="trend"></div>
+  </div>
+  <div class="chart-block">
+    <div class="chart-head">
+      <h3 id="sectorTitle">Severity by sector</h3>
+      <p class="sub" id="sectorSub"></p>
+    </div>
+    <div id="sectors"></div>
+  </div>
+</section>
+
+<section class="feed-section" id="feed">
+  <div class="section-head">
+    <div>
+      <h2>Incident feed</h2>
+      <p class="sub" id="feedSub"></p>
+    </div>
+    <div class="feed-tools">
+      <label class="sr-only" for="searchInput">Search incidents</label>
+      <input id="searchInput" type="search" placeholder="Search titles and descriptions">
+      <label class="field"><span>Sort</span><select id="sortSelect"><option value="date">Newest first</option><option value="sev">Most severe first</option></select></label>
+    </div>
+  </div>
+  <div id="activeLoc"></div>
+  <ol class="feed" id="feedList"></ol>
+  <div class="feed-more"><button class="btn-outline" id="moreBtn" hidden>Show more incidents</button></div>
+</section>
+
+<section class="reports" id="reports">
+  <div class="section-head"><div><span class="eyebrow">ANALYSIS</span><h2>Reports from the Central Asia Center</h2></div></div>
+  <div id="reportList"></div>
+</section>
+
+<section class="method" id="methodology">
+  <span class="eyebrow">METHODOLOGY</span>
+  <h2>How the severity score works</h2>
+  <div class="method-grid">
+    <div>
+      <p>Each incident gets a severity rating from 1 to 4 from Central Asia Center analysts. It is also tagged with the country it concerns, the sectors it touches, and the outside actors involved: Russia, China, the United States, and other S7 states.</p>
+      <ol class="steps">
+        <li><strong>Rescale each rating to 0–100.</strong> 1 becomes 0, 2 becomes 33, 3 becomes 67 and 4 becomes 100.</li>
+        <li><strong>Average within each sector.</strong> For a country and month, the ratings in each of the eight sectors are averaged. An incident tagged with several sectors counts toward each of them.</li>
+        <li><strong>Weight sectors equally.</strong> The country score is the simple average of its sector scores, so each sector carries equal weight. Sectors with no incidents in the period are left out rather than counted as zero.</li>
+        <li><strong>Filter by actor.</strong> An actor's score uses only the incidents that actor is involved in. "All actors" uses every incident.</li>
+      </ol>
+      <p>Only Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan and Uzbekistan are scored. Incidents located elsewhere, for example in Russia, China or Azerbaijan, appear on the map and in the feed but do not affect any score.</p>
+    </div>
+    <div>
+      <h3>Incident severity levels</h3>
+      <dl class="levels">
+        <div><dt><span class="lvl l1">1</span></dt><dd>Meetings between officials with no outcome or agreement, or reporting that a situation continues unchanged.</dd></div>
+        <div><dt><span class="lvl l2">2</span></dt><dd>A memorandum of understanding or cooperation agreement is signed, or heads of state meet.</dd></div>
+        <div><dt><span class="lvl l3">3</span></dt><dd>An agreement with tangible outcomes, such as a financial investment or specific figures, or an event of geopolitical significance: great-power competition, terrorism, a shift in relations.</dd></div>
+        <div><dt><span class="lvl l4">4</span></dt><dd>An agreement with tangible outcomes of exceptional scale, for example billions invested or financed.</dd></div>
+      </dl>
+      <h3>Score bands</h3>
+      <div id="bandLegend"></div>
+    </div>
+  </div>
+  <p class="fine" id="dataNote"></p>
+</section>
+
+<footer class="site-footer" data-chrome>
+  <span><span class="foot-name">NEW LINES INSTITUTE</span><span class="foot-sub">Central Asia Center · S7+ Central Asia Tracker</span></span>
+  <span class="foot-sub">Map boundaries: Natural Earth. Boundaries shown do not imply endorsement.</span>
+</footer>
+
+</div>
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+</div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
