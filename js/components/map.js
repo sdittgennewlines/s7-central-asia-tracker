@@ -107,7 +107,7 @@ export function createMap(ctx) {
   }
 
   /**
-   * One country: a dark core with the incident count, wrapped in a thick
+   * One country: a transparent core with the incident count, wrapped in a thick
    * ring whose segments are the sector shares (clockwise from 12 o'clock,
    * in config order). The country name sits underneath.
    */

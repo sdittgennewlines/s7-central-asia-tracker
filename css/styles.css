@@ -107,9 +107,9 @@ body { margin: 0; background: #fff; }
 .s7cat .map-context.is-water { font-style: italic; text-transform: none; fill: #7E93A6; }
 .s7cat .map-bubble { cursor: pointer; }
 .s7cat .map-ring-track { fill: none; stroke: #E3E1DA; }
-.s7cat .map-bubble-core { fill: #232031; }
-.s7cat .map-bubble:hover .map-bubble-core { fill: #3A3548; }
-.s7cat .map-bubble-n { fill: #ECEAF2; font-family: Roboto, sans-serif; font-weight: 300; letter-spacing: .3px; pointer-events: none; }
+.s7cat .map-bubble-core { fill: transparent; } /* transparent but still clickable */
+.s7cat .map-bubble:hover .map-bubble-core { fill: rgba(255,255,255,.45); }
+.s7cat .map-bubble-n { fill: var(--ink); font-family: Roboto, sans-serif; font-weight: 400; letter-spacing: .3px; pointer-events: none; }
 .s7cat .map-bubble-sel { fill: none; stroke: var(--gold); stroke-width: 3; }
 .s7cat .map-bubble-name { font: 500 12px Roboto, sans-serif; letter-spacing: .8px; text-transform: uppercase; fill: var(--ink); paint-order: stroke; stroke: rgba(255,255,255,.9); stroke-width: 3px; pointer-events: none; }
 .s7cat .map-bubble.is-selected .map-bubble-name { font-weight: 700; }
