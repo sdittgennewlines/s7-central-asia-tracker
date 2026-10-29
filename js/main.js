@@ -4,12 +4,12 @@
  *
  * Page anatomy (see index.html):
  *
- *   Toolbar           country picker + month navigator
- *   ┌───────────────────────────┬──────────────────┐
- *   │ Map                       │ Profile          │
- *   │ Index table (5 × 4)       │ Index chart      │
- *   │ Breakdown (8 sectors)     │ Incident feed    │
- *   └───────────────────────────┴──────────────────┘
+ *   ┌──────────────────────────────┬──────────────────┐
+ *   │ Map (bubbles + sector rings) │ Incident feed    │  same height
+ *   ├──────────────────────────────┼──────────────────┤
+ *   │ Country summary              │ Index line chart │
+ *   │ "How ___ adds up" breakdown  │                  │
+ *   └──────────────────────────────┴──────────────────┘
  *   Reports, Methodology
  *
  * To add a component: create js/components/<name>.js exporting
@@ -21,12 +21,10 @@ import { loadIncidents, loadJSON, monthsIn } from "./data.js";
 import { createScorer } from "./indices.js";
 import { createStore } from "./state.js";
 import { byId, fmtDate } from "./util.js";
-import { createToolbar } from "./components/toolbar.js";
 import { createMap } from "./components/map.js";
-import { createProfile } from "./components/profile.js";
+import { createCountrySummary } from "./components/countrySummary.js";
 import { createIndexChart } from "./components/indexChart.js";
 import { createBreakdown } from "./components/breakdown.js";
-import { createIndexTable } from "./components/indexTable.js";
 import { createFeed } from "./components/feed.js";
 import { renderReports } from "./components/reports.js";
 
@@ -55,16 +53,15 @@ async function start() {
   const months = monthsIn(inc.incidents);
   const store = createStore({
     country: CONFIG.defaultCountry,
-    month: months[months.length - 1],
+    filters: { sectors: [], actor: "all", period: "all", search: "", location: null },
+    window: { end: months[months.length - 1], span: "1" },
     range: "all",
-    indices: CONFIG.indices.map((ix) => ix.key),
-    highlight: null,
-    feed: { actor: "all", sector: "all", allMonths: false, location: null, search: "", shown: 10 }
+    indices: CONFIG.indices.map((ix) => ix.key)
   });
   const ctx = { cfg: CONFIG, incidents: inc.incidents, months, geo, profiles, store, scorer: createScorer(inc.incidents, CONFIG) };
 
   // 3. Components. Order doesn't matter; each owns its own DOM.
-  const components = [createToolbar, createMap, createProfile, createIndexChart, createBreakdown, createIndexTable, createFeed].map((make) => make(ctx));
+  const components = [createMap, createFeed, createCountrySummary, createBreakdown, createIndexChart].map((make) => make(ctx));
   const renderAll = (state) => { components.forEach((c) => c.render(state)); postHeight(); };
   store.subscribe(renderAll);
 

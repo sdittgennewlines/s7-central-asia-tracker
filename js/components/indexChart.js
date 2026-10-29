@@ -1,17 +1,18 @@
 /**
  * Index chart: monthly RII / CII / USEI / SIRI for the selected country,
- * as overlaid lines. Users choose which indices to show and the time span.
- * Clicking a month selects it for the whole page.
+ * as overlaid lines (right column, under the feed). Users choose which
+ * indices to show and the time span. Clicking a month makes it the end of
+ * the breakdown's window, so the two stay in step.
  *
- * Reads:  state.country, state.month, state.range, state.indices
- * Writes: indices (toggle chips), range (time-span buttons), month (click)
+ * Reads:  state.country, state.window.end, state.range, state.indices
+ * Writes: indices (toggle chips), range (time-span buttons), window.end (click)
  * DOM:    #indexChart (chart), #indexToggles, #rangeSeg, #indexChartTitle
  */
 import { byId, esc, fmtIndex, monthAbbr, monthLabel } from "../util.js";
 import * as tooltip from "../tooltip.js";
 
 // Chart geometry in SVG units (scaled to the container width by CSS).
-const W = 460, H = 250;
+const W = 460, H = 300;
 const M = { top: 12, right: 58, bottom: 26, left: 30 };
 const IW = W - M.left - M.right, IH = H - M.top - M.bottom;
 
@@ -27,6 +28,7 @@ export function createIndexChart(ctx) {
   const toggles = byId("indexToggles");
   const rangeSeg = byId("rangeSeg");
   const title = byId("indexChartTitle");
+  const cell = el.closest(".cell-chart");
   let tableOpen = false;
 
   /* ---- controls (built once) ---- */
@@ -48,10 +50,19 @@ export function createIndexChart(ctx) {
     return range === "all" ? months : months.slice(-Number(range));
   }
 
+  /** Placeholder shown until a country is selected. */
+  function renderEmpty() {
+    cell.classList.add("is-empty");
+    title.textContent = "Influence indices over time";
+    el.innerHTML = `<div class="ic-empty"><svg viewBox="0 0 ${W} 120" aria-hidden="true"><path d="M${M.left} 100 L120 80 L200 88 L280 52 L360 64 L${M.left + IW} 30" fill="none" stroke="#DCDAD3" stroke-width="2" stroke-dasharray="4 4"/></svg><p>Select a country to see its four indices month by month.</p></div>`;
+  }
+
   function render(state) {
-    title.textContent = `Influence indices: ${state.country}`;
     toggles.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(state.indices.includes(b.dataset.key))));
     rangeSeg.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.range === state.range)));
+    if (!state.country) return renderEmpty();
+    cell.classList.remove("is-empty");
+    title.textContent = `Influence indices: ${state.country}`;
 
     const ms = visibleMonths(state.range);
     const shown = cfg.indices.filter((ix) => state.indices.includes(ix.key));
@@ -66,8 +77,8 @@ export function createIndexChart(ctx) {
 
     const s = [`<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart of monthly influence indices for ${esc(state.country)}">`];
 
-    // Selected-month band.
-    const sel = ms.indexOf(state.month);
+    // Band on the breakdown's end month.
+    const sel = ms.indexOf(state.window.end);
     if (sel >= 0) {
       const x0 = Math.max(M.left, x(sel) - step / 2), x1 = Math.min(M.left + IW, x(sel) + step / 2);
       s.push(`<rect x="${x0.toFixed(1)}" y="${M.top}" width="${(x1 - x0).toFixed(1)}" height="${IH}" class="ic-band"/>`);
@@ -120,10 +131,10 @@ export function createIndexChart(ctx) {
       cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
       tooltip.show(`<b>${monthLabel(ms[i])}</b>` + series.map(({ ix, points }) =>
         `<div class="tt-row"><span><span class="swatch" style="background:${ix.color}"></span>${ix.key}</span><b>${fmtIndex(points[i].value)}</b></div>`).join("") +
-        `<div class="tt-hint">Click to see the breakdown</div>`, ev);
+        `<div class="tt-hint">Click to see how this month adds up</div>`, ev);
     });
     hit.addEventListener("mouseleave", () => { cross.setAttribute("visibility", "hidden"); tooltip.hide(); });
-    hit.addEventListener("click", (ev) => { tooltip.hide(); store.set({ month: ms[indexAt(ev)], highlight: null }); });
+    hit.addEventListener("click", (ev) => { tooltip.hide(); store.set({ window: { ...store.get().window, end: ms[indexAt(ev)] } }); });
   }
 
   return { render };

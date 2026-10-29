@@ -14,20 +14,20 @@ config.js                  THE file to edit: data sources, countries, sectors, i
 css/styles.css             all styles, scoped under .s7cat, in page order
 js/
   main.js                  entry point: loads data, creates components, re-renders on change
-  state.js                 the shared state store (what country/month/filters are selected)
+  state.js                 the shared state store (selected country, filters, time window)
+  filters.js               incident filters shared by the map and the feed
   data.js                  loading + cleaning incidents (JSON snapshot or live sheet CSV)
-  indices.js               the scoring model (pure functions, no DOM)
+  indices.js               the scoring model, monthly and over time windows (pure functions)
   scales.js                colour scales shared by every component
   tooltip.js               the one floating tooltip
   util.js                  formatting helpers
   components/
-    toolbar.js             country picker + month navigator
-    map.js                 map with incident markers and edge pins
-    profile.js             country fact sheet
-    indexChart.js          RII / CII / USEI / SIRI over time
-    indexTable.js          the four indices for all five countries
-    breakdown.js           how the 8 sectors add up to each index
-    feed.js                incident feed with filters
+    map.js                 one bubble per country, ringed by sector; pins for other places
+    feed.js                incident feed + the filters (sector chips, actor, period, search)
+    countrySummary.js      selected country's name, leader and key facts
+    breakdown.js           "How <country>'s indices add up" for 1 month / 3 months / all time
+    indexTable.js          the four indices for all five countries (shown when no country is selected)
+    indexChart.js          RII / CII / USEI / SIRI month by month
     reports.js             links to analyst reports
 data/
   incidents.json           snapshot of the "Incidents - Global" tab
@@ -54,8 +54,9 @@ Each index is computed per country, per actor, per month. The code is in `js/ind
 3. Average the rescaled severities within each of the 8 sectors. A sector with no incidents scores **0**. An incident tagged with several sectors counts in each.
 4. Each sector contributes **12.5%**, so `index = Σ (sector score × 0.125)`, on a 0–100 scale.
 5. If an actor has no incidents in a country that month, its index is 0.
+6. Over several months (e.g. 3 months ending in September, or all time ending in June), the score is the **average of the monthly scores**. Months with no incidents count as 0.
 
-Severity describes individual incidents only. Only the five republics are scored. Incidents located elsewhere appear on the map and in the feed.
+On the map, each country's bubble shows how many incidents pass the feed's filters. The ring around it splits those incidents by sector, and an incident tagged with several sectors counts in each. Severity describes individual incidents only. Only the five republics are scored. Incidents located elsewhere appear on the map and in the feed.
 
 ## Updating the data
 

@@ -1,94 +1,119 @@
 /**
- * Incident feed: incidents for the selected country (or a non-scored
- * location picked from a map pin), filtered by month, actor, sector and
- * free text. Each item shows its severity badge, sectors, actors and source.
+ * Incident feed (right column, beside the map). Shows every incident,
+ * newest first, narrowed by the selected country and the filters below.
+ * The filters also drive the map's bubble counts and rings.
  *
- * Reads:  state.country, state.month, state.highlight, state.feed
- * Writes: feed (all filters)
- * DOM:    #feedList, #feedSummary, #feedActor, #feedSector, #feedMonthToggle,
- *         #feedSearch, #feedMore, #feedLocation
+ *   Sector chips   multi-select, coloured like the map's rings
+ *   Actor          Russia / China / United States / S7+ states
+ *   Period         all time or one month
+ *   Search         title and description text
+ *
+ * Reads:  state.country, state.filters
+ * Writes: filters, country (clearing the country chip)
+ * DOM:    #feedList, #feedSummary, #feedSectors, #feedActor, #feedPeriod,
+ *         #feedSearch, #feedScope
+ *
+ * The list renders 15 items at a time and adds more as it is scrolled to
+ * the bottom (a "Show more" button at the end does the same for keyboards).
  */
 import { byId, domain, esc, fmtDate, monthLabel, plural } from "../util.js";
-import { REGION_WIDE, locationKey } from "../data.js";
+import { REGION_WIDE } from "../data.js";
+import { feedIncidents, isFiltered } from "../filters.js";
 import { severityColor } from "../scales.js";
 
-const PAGE = 10;
+const PAGE = 15;
 
 export function createFeed(ctx) {
-  const { cfg, incidents, store } = ctx;
+  const { cfg, incidents, months, store } = ctx;
+  const sectorOf = Object.fromEntries(cfg.sectors.map((s) => [s.key, s]));
   const actorLabel = Object.fromEntries(cfg.indices.map((ix) => [ix.actor, ix.actorLabel]));
-  const actorColor = Object.fromEntries(cfg.indices.map((ix) => [ix.actor, ix.color]));
-  const sectorLabel = Object.fromEntries(cfg.sectors.map((s) => [s.key, s.label]));
+  let shown = PAGE;
 
-  const list = byId("feedList"), summary = byId("feedSummary"), more = byId("feedMore");
-  const actorSel = byId("feedActor"), sectorSel = byId("feedSector"), monthToggle = byId("feedMonthToggle");
-  const search = byId("feedSearch"), locBox = byId("feedLocation");
+  const list = byId("feedList"), summary = byId("feedSummary"), scope = byId("feedScope");
+  const sectorBox = byId("feedSectors"), actorSel = byId("feedActor"), periodSel = byId("feedPeriod"), search = byId("feedSearch");
 
-  /* ---- filter controls (built once) ---- */
+  /** Patch the shared filters (and reset paging). */
+  const setFilters = (patch) => { shown = PAGE; store.set({ filters: { ...store.get().filters, ...patch } }); };
+
+  /* ---- controls (built once) ---- */
+  sectorBox.innerHTML = cfg.sectors.map((s) =>
+    `<button class="sector-chip" data-s="${esc(s.key)}" style="--c:${s.color}"><i></i>${esc(s.label)}</button>`).join("");
+  sectorBox.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+    const cur = new Set(store.get().filters.sectors);
+    cur.has(b.dataset.s) ? cur.delete(b.dataset.s) : cur.add(b.dataset.s);
+    setFilters({ sectors: cfg.sectors.map((s) => s.key).filter((k) => cur.has(k)) });
+  }));
   actorSel.innerHTML = `<option value="all">All actors</option>` + cfg.indices.map((ix) => `<option value="${ix.actor}">${esc(ix.actorLabel)}</option>`).join("");
-  sectorSel.innerHTML = `<option value="all">All sectors</option>` + cfg.sectors.map((s) => `<option value="${esc(s.key)}">${esc(s.label)}</option>`).join("");
-  actorSel.addEventListener("change", () => store.setFeed({ actor: actorSel.value, shown: PAGE }));
-  sectorSel.addEventListener("change", () => store.setFeed({ sector: sectorSel.value, shown: PAGE }));
-  monthToggle.addEventListener("change", () => store.setFeed({ allMonths: monthToggle.checked, shown: PAGE }));
-  search.addEventListener("input", () => store.setFeed({ search: search.value, shown: PAGE }));
-  more.addEventListener("click", () => store.setFeed({ shown: store.get().feed.shown + PAGE }));
+  periodSel.innerHTML = `<option value="all">All time</option>` + [...months].reverse().map((m) => `<option value="${m}">${monthLabel(m)}</option>`).join("");
+  actorSel.addEventListener("change", () => setFilters({ actor: actorSel.value }));
+  periodSel.addEventListener("change", () => setFilters({ period: periodSel.value }));
+  search.addEventListener("input", () => setFilters({ search: search.value }));
+  const loadMore = () => { shown += PAGE; render(store.get()); };
+  list.addEventListener("click", (e) => { if (e.target.closest(".feed-more button")) loadMore(); });
+  // Infinite scroll: near the bottom of the list, render the next page.
+  list.addEventListener("scroll", () => {
+    if (list.querySelector(".feed-more") && list.scrollTop + list.clientHeight > list.scrollHeight - 120) loadMore();
+  });
+  // Descriptions are clamped to three lines; click (or Enter) toggles the full text.
+  list.addEventListener("click", (e) => e.target.closest(".feed-desc")?.classList.toggle("is-open"));
+  list.addEventListener("keydown", (e) => { if (e.key === "Enter") e.target.closest(".feed-desc")?.classList.toggle("is-open"); });
 
-  /** Apply the feed filters to the full incident list. */
-  function select(state) {
-    const f = state.feed, q = f.search.trim().toLowerCase();
-    return incidents.filter((i) =>
-      (f.location ? locationKey(i) === f.location : i.location === state.country) &&
-      (f.allMonths || i.date.startsWith(state.month)) &&
-      (f.actor === "all" || i.actors.includes(f.actor)) &&
-      (f.sector === "all" || i.types.includes(f.sector)) &&
-      (!q || `${i.title} ${i.description}`.toLowerCase().includes(q))
-    ).sort((a, b) => b.date.localeCompare(a.date) || (b.severity || 0) - (a.severity || 0));
-  }
-
-  /** Severity badge: coloured square with the level number and its label. */
+  /** Severity badge: coloured square with the level and its label. */
   function badge(sev) {
-    const dark = sev >= 3;
     const label = sev == null ? "Unrated" : cfg.severityLevels[Math.max(1, sev)].label;
-    return `<span class="sev"><span class="sev-num" style="background:${severityColor(cfg, sev)};color:${dark ? "#fff" : "#1B1725"}">${sev ?? "–"}</span>${esc(label)}</span>`;
+    return `<span class="sev"><span class="sev-num" style="background:${severityColor(cfg, sev)};color:${sev >= 3 ? "#fff" : "#1B1725"}">${sev ?? "–"}</span>${esc(label)}</span>`;
   }
 
-  /** One feed item. */
-  function item(inc, highlighted) {
-    const actors = inc.actors.map((a) => `<span class="chip"><span class="swatch" style="background:${actorColor[a]}"></span>${esc(actorLabel[a])}</span>`).join("");
-    const sectors = inc.types.map((t) => `<span class="chip">${esc(sectorLabel[t] || t)}</span>`).join("");
-    return `<li class="feed-item${highlighted ? " is-highlighted" : ""}" id="incident-${inc.row}">
-      <div class="feed-meta">${fmtDate(inc.date)} ${badge(inc.severity)}</div>
+  /** One incident. */
+  function item(inc) {
+    const sectors = inc.types.map((t) => `<span class="chip"><i class="chip-swatch" style="background:${sectorOf[t]?.color || "#999"}"></i>${esc(sectorOf[t]?.label || t)}</span>`).join("");
+    const actors = inc.actors.map((a) => esc(actorLabel[a])).join(", ");
+    return `<li class="feed-item">
+      <div class="feed-meta"><span>${fmtDate(inc.date)} · <b>${esc(inc.location || REGION_WIDE)}</b>${inc.scored ? "" : " (not scored)"}</span>${badge(inc.severity)}</div>
       <h3>${esc(inc.title)}</h3>
-      <p>${esc(inc.description)}</p>
-      <div class="feed-tags">${inc.scored ? "" : `<span class="chip">${esc(inc.location || REGION_WIDE)} · not scored</span>`}${sectors}${actors}
-        ${inc.link ? `<a class="feed-src" href="${esc(inc.link)}" target="_blank" rel="noopener">${esc(domain(inc.link))} ↗</a>` : ""}</div>
+      <p class="feed-desc" tabindex="0" title="Show full description">${esc(inc.description)}</p>
+      <div class="feed-tags">${sectors}</div>
+      <div class="feed-foot"><span class="feed-actors">${actors ? `Actors: ${actors}` : ""}</span>${inc.link ? `<a href="${esc(inc.link)}" target="_blank" rel="noopener">${esc(domain(inc.link))} ↗</a>` : ""}</div>
     </li>`;
   }
 
   function render(state) {
-    const f = state.feed;
-    actorSel.value = f.actor; sectorSel.value = f.sector; monthToggle.checked = f.allMonths;
+    const f = state.filters;
+    // Sync controls.
+    sectorBox.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(f.sectors.includes(b.dataset.s))));
+    actorSel.value = f.actor; periodSel.value = f.period;
     if (search.value !== f.search) search.value = f.search;
 
-    // Location chip when a map pin (non-scored place) is driving the feed.
-    locBox.innerHTML = f.location ? `<span class="chip">Showing: ${esc(f.location)} <button aria-label="Back to ${esc(state.country)}">×</button></span>` : "";
-    locBox.querySelector("button")?.addEventListener("click", () => store.setFeed({ location: null }));
+    // Scope chips: selected country or map pin, plus "clear filters".
+    const chips = [];
+    if (f.location) chips.push(`<span class="chip">Location: ${esc(f.location)} <button data-clear="location" aria-label="Clear location">×</button></span>`);
+    else if (state.country) chips.push(`<span class="chip">Country: ${esc(state.country)} <button data-clear="country" aria-label="Show all countries">×</button></span>`);
+    if (isFiltered({ ...f, location: null })) chips.push(`<button class="link-btn" data-clear="filters">Clear filters</button>`);
+    scope.innerHTML = chips.join("");
+    scope.querySelectorAll("[data-clear]").forEach((b) => b.addEventListener("click", () => {
+      const k = b.dataset.clear;
+      if (k === "country") store.set({ country: null });
+      else if (k === "location") setFilters({ location: null });
+      else setFilters({ sectors: [], actor: "all", period: "all", search: "" });
+    }));
 
-    let rows = select(state);
-    // Make sure a highlighted incident is rendered even if it's beyond the first page.
-    const hi = rows.findIndex((r) => r.row === state.highlight);
-    const shown = Math.max(f.shown, hi + 1);
-
-    const where = f.location || state.country;
-    summary.textContent = `${plural(rows.length, "incident")} · ${where} · ${f.allMonths ? "all months" : monthLabel(state.month)}`;
+    const rows = feedIncidents(incidents, state).sort((a, b) => b.date.localeCompare(a.date) || b.row - a.row);
+    summary.textContent = `${plural(rows.length, "incident")}, newest first`;
+    const top = list.scrollTop; // keep the scroll position when appending a page
     list.innerHTML = rows.length
-      ? rows.slice(0, shown).map((inc) => item(inc, inc.row === state.highlight)).join("")
-      : `<li class="feed-empty">No incidents match. Try "All months" or clear a filter.</li>`;
-    more.hidden = rows.length <= shown;
-    more.textContent = `Show more (${rows.length - shown} more)`;
-
-    if (hi >= 0) byId(`incident-${state.highlight}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      ? rows.slice(0, shown).map(item).join("") +
+        (rows.length > shown ? `<li class="feed-more"><button class="btn-outline">Show more (${rows.length - shown} more)</button></li>` : "")
+      : `<li class="feed-empty">No incidents match. Try clearing a filter.</li>`;
+    list.scrollTop = top;
   }
 
-  return { render };
+  // Reset paging and scroll to the top whenever the country or filters change.
+  let lastCountry, lastFilters;
+  return {
+    render(state) {
+      if (state.country !== lastCountry || state.filters !== lastFilters) { shown = PAGE; list.scrollTop = 0; }
+      lastCountry = state.country; lastFilters = state.filters;
+      render(state);
+    }
+  };
 }

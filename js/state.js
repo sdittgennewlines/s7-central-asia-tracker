@@ -6,19 +6,13 @@
  * (each component's render function) then runs with the new state.
  *
  * State shape:
- *   country     selected scored country, e.g. "Kazakhstan"
- *   month       selected month key, e.g. "2026-10" (drives map, table, breakdown, feed)
- *   range       time span of the index chart: "3" | "6" | "all" (months)
- *   indices     index keys shown on the chart and breakdown, e.g. ["RII","CII"]
- *   highlight   row id of the incident the user picked on the map, or null
- *   feed        incident-feed filters:
- *                 actor     "all" or an actor key (Russia, China, USA, S7)
- *                 sector    "all" or a sector key
- *                 allMonths true = ignore the selected month
- *                 location  null = selected country; otherwise a non-scored
- *                           location picked from a map pin (e.g. "Russia")
- *                 search    free-text filter
- *                 shown     how many feed items are rendered
+ *   country   selected scored country ("Kazakhstan"), or null for the
+ *             regional overview (the default on first load)
+ *   filters   incident filters shared by the map and the feed
+ *             (see filters.js): { sectors, actor, period, search, location }
+ *   window    the breakdown's time window: { end: "2026-09", span: "1"|"3"|"all" }
+ *   range     time span of the line chart: "3" | "6" | "all" (months)
+ *   indices   index keys drawn on the line chart, e.g. ["RII", "CII"]
  */
 
 export function createStore(initial) {
@@ -33,11 +27,6 @@ export function createStore(initial) {
     set(patch) {
       state = { ...state, ...patch };
       listeners.forEach((fn) => fn(state));
-    },
-
-    /** Merge a patch into state.feed (convenience for the feed filters). */
-    setFeed(patch) {
-      this.set({ feed: { ...state.feed, ...patch } });
     },
 
     /** Register a function to run after every change. */

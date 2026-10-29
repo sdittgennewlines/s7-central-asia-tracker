@@ -16,7 +16,21 @@
  *      so the index runs 0-100 and each sector adds 0-12.5 points.
  *
  * If the actor has no incidents in the country that month, the index is 0.
+ *
+ * Over a window of several months (e.g. the 3 months ending in September,
+ * or all time ending in June), the window score is the AVERAGE of the
+ * monthly scores. Months with no incidents count as 0, consistent with the
+ * monthly rule. Sector points are averaged the same way, so a window's
+ * sector points still add up to its index.
  */
+
+/** The month keys in a window ending at `end`. span: "1" | "3" | "all". */
+export function windowMonths(months, end, span) {
+  const i = months.indexOf(end);
+  if (i < 0) return [];
+  const start = span === "all" ? 0 : Math.max(0, i - Number(span) + 1);
+  return months.slice(start, i + 1);
+}
 
 /** Severity 1-4 -> 0-100. Returns null for unrated incidents. */
 export function rescaleSeverity(sev) {
@@ -72,5 +86,30 @@ export function createScorer(incidents, cfg) {
     });
   }
 
-  return { index, series, incidentsFor };
+  /**
+   * Index over a window of months (average of the monthly results).
+   * Returns the same shape as index(), plus `months`.
+   * Sector `n` and `incidents` are totals across the window.
+   */
+  function windowIndex(country, indexKey, windowKeys) {
+    const monthly = windowKeys.map((m) => index(country, indexKey, m));
+    const k = monthly.length || 1;
+    const sectors = cfg.sectors.map((s, si) => {
+      const cells = monthly.map((r) => r.sectors[si]);
+      return {
+        key: s.key, label: s.label,
+        score: cells.reduce((a, c) => a + c.score, 0) / k,
+        points: cells.reduce((a, c) => a + c.points, 0) / k,
+        n: cells.reduce((a, c) => a + c.n, 0)
+      };
+    });
+    return {
+      value: monthly.reduce((a, r) => a + r.value, 0) / k,
+      incidents: monthly.reduce((a, r) => a + r.incidents, 0),
+      sectors,
+      months: windowKeys
+    };
+  }
+
+  return { index, series, windowIndex, incidentsFor };
 }

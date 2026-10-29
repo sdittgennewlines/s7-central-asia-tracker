@@ -32,22 +32,26 @@ export const CONFIG = {
   // anywhere else still appear on the map and in the feed.
   scoredCountries: ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"],
 
-  // Country selected when the page first loads.
-  defaultCountry: "Kazakhstan",
+  // Country selected when the page first loads (null = none: the page opens
+  // on the regional overview).
+  defaultCountry: null,
 
   /* ------------------------------------------------------------- sectors */
 
-  // The eight incident types. Each contributes an equal share (1/8 = 12.5%)
-  // of every index score. Order here is the display order.
+  // The eight sectors an incident can touch. Each contributes an equal
+  // share (1/8 = 12.5%) of every index score. The order here is the order
+  // around each country's ring on the map, and the colours were checked as
+  // a set for colour-blind separation of neighbouring segments: change
+  // order and colours together.
   sectors: [
-    { key: "Energy", label: "Energy" },
-    { key: "Water", label: "Water" },
-    { key: "Education/Culture", label: "Education & culture" },
-    { key: "AI", label: "AI & digital" },
-    { key: "Transportation", label: "Transportation" },
-    { key: "Agro and Industrial", label: "Agriculture & industry" },
-    { key: "Finance/Business", label: "Finance & business" },
-    { key: "Defense", label: "Defense" }
+    { key: "Energy", label: "Energy", color: "#C98A2B" },
+    { key: "Water", label: "Water", color: "#3F7FB5" },
+    { key: "Education/Culture", label: "Education & culture", color: "#C4587A" },
+    { key: "Agro and Industrial", label: "Agriculture & industry", color: "#7C9440" },
+    { key: "AI", label: "AI & digital", color: "#8A6BB0" },
+    { key: "Transportation", label: "Transportation", color: "#2A9D8F" },
+    { key: "Finance/Business", label: "Finance & business", color: "#3E4E9C" },
+    { key: "Defense", label: "Defense", color: "#A0523C" }
   ],
 
   /* ------------------------------------------------------------- indices */

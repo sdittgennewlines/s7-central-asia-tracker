@@ -15,10 +15,10 @@
   Layout map (each block is filled by one module in js/components/):
     header ............ static
     hero .............. static
-    toolbar ........... toolbar.js
     dashboard
-      left column ..... map.js, indexTable.js, breakdown.js
-      right column .... profile.js, indexChart.js, feed.js
+      map ............. map.js          feed ........... feed.js
+      summary ......... countrySummary.js
+      breakdown ....... breakdown.js (+ indexTable.js)   line chart ... indexChart.js
     reports ........... reports.js
     methodology ....... static (+ data note from main.js)
 -->
@@ -43,82 +43,76 @@
 
   <p class="tracker-error" id="trackerError" hidden>The tracker data could not be loaded. Please refresh the page.</p>
 
-  <!-- ========================================================= Toolbar -->
-  <div class="toolbar" role="region" aria-label="Country and month">
-    <label class="field"><span>Country</span><select id="countrySelect"></select></label>
-    <div class="month-nav">
-      <span class="field-label">Month</span>
-      <button class="icon-btn" id="prevMonth" aria-label="Previous month">‹</button>
-      <label class="sr-only" for="monthSelect">Month</label>
-      <select id="monthSelect"></select>
-      <button class="icon-btn" id="nextMonth" aria-label="Next month">›</button>
-    </div>
-  </div>
-
-  <!-- ======================================================= Dashboard -->
+  <!-- ======================================================= Dashboard
+       Four cells on a 2/3 + 1/3 grid. Row 1: map | feed (the feed is
+       exactly as tall as the map and scrolls). Row 2: summary + breakdown
+       | line chart, so the chart's top is flush with the map's bottom. -->
   <div class="dashboard">
 
-    <!-- Left column: map + country-by-index table -->
-    <div class="col-main">
-      <section class="block o-map" aria-labelledby="mapTitle">
-        <div class="block-head">
-          <h2 id="mapTitle">Incident map</h2>
-          <p class="sub" id="mapCaption"></p>
-        </div>
-        <div class="map" id="map" role="img" aria-label="Map of Central Asia with one marker per incident, sized and coloured by severity"></div>
-        <div class="map-legend" id="mapLegend"></div>
-      </section>
+    <!-- Row 1, left: map -->
+    <section class="cell cell-map" aria-labelledby="mapTitle">
+      <div class="block-head">
+        <h2 id="mapTitle">Incident map</h2>
+        <p class="sub" id="mapCaption"></p>
+      </div>
+      <div class="map" id="map" role="img" aria-label="Map of Central Asia with one bubble per country sized by incident count, ringed by sector"></div>
+      <div class="map-legend" id="mapLegend"></div>
+    </section>
 
-      <section class="block o-table" aria-labelledby="indexTableTitle">
+    <!-- Row 1, right: incident feed -->
+    <section class="cell cell-feed" id="feed" aria-labelledby="feedTitle">
+      <div class="feed-inner">
         <div class="block-head">
-          <h2 id="indexTableTitle">The four indices across Central Asia</h2>
-          <p class="sub" id="indexTableSub"></p>
+          <h2 id="feedTitle">Incident feed</h2>
+          <p class="sub" id="feedSummary"></p>
         </div>
-        <div id="indexTable"></div>
-        <div class="it-legend" id="indexTableLegend" aria-label="Shading key"></div>
-      </section>
+        <div class="feed-sectors" id="feedSectors" role="group" aria-label="Filter by sector"></div>
+        <div class="feed-filters">
+          <label class="sr-only" for="feedActor">Actor</label><select id="feedActor"></select>
+          <label class="sr-only" for="feedPeriod">Period</label><select id="feedPeriod"></select>
+          <label class="sr-only" for="feedSearch">Search</label><input type="search" id="feedSearch" placeholder="Search incidents">
+        </div>
+        <div class="feed-scope" id="feedScope"></div>
+        <ol class="feed-list" id="feedList"></ol>
+      </div>
+    </section>
 
-      <section class="block o-breakdown" aria-labelledby="breakdownTitle">
-        <div class="block-head">
-          <h2 id="breakdownTitle">How the scores add up</h2>
-          <p class="sub">Each index is built from eight sectors of equal weight. A sector adds up to 12.5 points.</p>
+    <!-- Row 2, left: country summary + "how it adds up" -->
+    <div class="cell cell-detail">
+      <section class="country-summary" id="countrySummary" aria-live="polite"></section>
+
+      <section class="breakdown-block" aria-labelledby="breakdownTitle">
+        <div class="bd-head">
+          <div class="block-head">
+            <h2 id="breakdownTitle"></h2>
+            <p class="sub" id="breakdownSub"></p>
+          </div>
+          <div class="bd-controls">
+            <div class="month-nav">
+              <button class="icon-btn" id="windowPrev" aria-label="Previous month">‹</button>
+              <label class="sr-only" for="windowEnd">Ending in</label>
+              <select id="windowEnd"></select>
+              <button class="icon-btn" id="windowNext" aria-label="Next month">›</button>
+            </div>
+            <div class="seg" id="windowSpan" role="group" aria-label="Time frame"></div>
+          </div>
         </div>
         <div id="breakdown"></div>
       </section>
     </div>
 
-    <!-- Right column: country profile, indices over time, breakdown, feed -->
-    <aside class="col-side">
-      <section class="block panel o-profile" id="profile" aria-live="polite"></section>
-
-      <section class="block o-chart" aria-labelledby="indexChartTitle">
-        <div class="block-head">
-          <h2 id="indexChartTitle">Influence indices</h2>
-        </div>
-        <div class="ic-controls">
-          <div class="ic-toggles" id="indexToggles" role="group" aria-label="Indices to show"></div>
-          <div class="seg" id="rangeSeg" role="group" aria-label="Time span"></div>
-        </div>
-        <div id="indexChart"></div>
-        <p class="note">Select a month on the chart to see how its scores add up, under the map.</p>
-      </section>
-
-      <section class="block o-feed" id="feed" aria-labelledby="feedTitle">
-        <div class="block-head">
-          <h2 id="feedTitle">Incident feed</h2>
-          <p class="sub" id="feedSummary"></p>
-        </div>
-        <div class="feed-filters">
-          <label class="sr-only" for="feedActor">Actor</label><select id="feedActor"></select>
-          <label class="sr-only" for="feedSector">Sector</label><select id="feedSector"></select>
-          <label class="check"><input type="checkbox" id="feedMonthToggle"> All months</label>
-          <label class="sr-only" for="feedSearch">Search</label><input type="search" id="feedSearch" placeholder="Search incidents">
-        </div>
-        <div id="feedLocation"></div>
-        <ol class="feed-list" id="feedList"></ol>
-        <button class="btn-outline" id="feedMore" hidden></button>
-      </section>
-    </aside>
+    <!-- Row 2, right: indices over time -->
+    <section class="cell cell-chart" aria-labelledby="indexChartTitle">
+      <div class="block-head">
+        <h2 id="indexChartTitle">Influence indices</h2>
+      </div>
+      <div class="ic-controls">
+        <div class="ic-toggles" id="indexToggles" role="group" aria-label="Indices to show"></div>
+        <div class="seg" id="rangeSeg" role="group" aria-label="Time span"></div>
+      </div>
+      <div id="indexChart"></div>
+      <p class="note">Select a month on the chart to see how it adds up, on the left.</p>
+    </section>
   </div>
 
   <!-- ========================================================= Reports -->
