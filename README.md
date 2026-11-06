@@ -16,7 +16,7 @@ js/
   main.js                  entry point: loads data, creates components, re-renders on change
   state.js                 the shared state store (selected country, filters, time window)
   filters.js               incident filters shared by the map and the feed
-  data.js                  loading + cleaning incidents (JSON snapshot or live sheet CSV)
+  data.js                  loading the data files
   indices.js               the scoring model, monthly and over time windows (pure functions)
   scales.js                colour scales shared by every component
   tooltip.js               the one floating tooltip
@@ -30,12 +30,15 @@ js/
     indexChart.js          RII / CII / USEI / SIRI month by month
     reports.js             links to analyst reports
 data/
-  incidents.json           snapshot of the "Incidents - Global" tab
+  incidents.json           incidents, rebuilt nightly from the sheet
+  update-report.json       last night's update: counts, held-back rows and why
   countries.json           country profiles (labels and sources defined once under "fields")
   region.geo.json          country borders (Natural Earth, public domain), cropped to the region
   reports.json             report links
 assets/new-lines-logo.png
-tools/                     Python scripts used to build the data files
+tools/update_data.py       nightly sheet -> incidents.json update, with all the checks
+tools/clip_geo.py          one-off: crop the map borders
+.github/workflows/         the nightly schedule
 ```
 
 ### How the code fits together
@@ -49,7 +52,7 @@ tools/                     Python scripts used to build the data files
 
 Each index is computed per country, per actor, per month. The code is in `js/indices.js`.
 
-1. Take that country's incidents for the month that involve the index's actor: Russia for RII, China for CII, the U.S. for USEI, S7+ states for SIRI.
+1. Take that country's incidents for the month (including incidents listing several countries) that involve the index's actor: Russia for RII, China for CII, the U.S. for USEI, S7+ states for SIRI.
 2. Rescale each incident's severity (1–4) to 0–100: 1 → 0, 2 → 33, 3 → 67, 4 → 100.
 3. Average the rescaled severities within each of the 8 sectors. A sector with no incidents scores **0**. An incident tagged with several sectors counts in each.
 4. Each sector contributes **12.5%**, so `index = Σ (sector score × 0.125)`, on a 0–100 scale.
@@ -60,9 +63,39 @@ On the map, each country's bubble shows how many incidents pass the feed's filte
 
 ## Updating the data
 
-**Incidents (snapshot).** Rebuild `data/incidents.json` from the sheet with `tools/build_incidents.py` (see the comments at the top of the script). Rows highlighted red (broken link) are left out.
+### Incidents: automatic, every night at midnight (New York)
 
-**Incidents (live).** In Google Sheets choose **File → Share → Publish to web**, then the *Incidents - Global* tab and **CSV**. Paste the link into `sheetCsvUrl` in `config.js`. Cell colours aren't included in CSV exports, so add a column named **Hide** and put `TRUE` on any row to keep off the public site.
+`.github/workflows/nightly-data.yml` runs `tools/update_data.py`, which downloads the **Incidents - Global** tab of the Google Sheet, checks it and republishes the site. Analysts just keep editing the sheet.
+
+**Row checks.** A row is held back (and the rest still publish) if it has:
+- an invalid or future date
+- no Central Asian country in Location
+- a sector not among the eight, or no sector
+- a severity other than 1–4
+- no actor ticked
+- no title
+- a link that isn't a single web address
+
+Held-back rows and the reasons are listed in [`data/update-report.json`](data/update-report.json). They are expected, so they don't send an alert. Fix the row and it appears the next night.
+
+**Hide a row.** Tick the **Hide** checkbox (column P) to keep an incident off the site, e.g. while checking a broken link.
+
+**Multi-country incidents.** Select several countries in Location. The incident appears under each country and counts toward each country's indices. Places other than the five countries are ignored (noted in the report).
+
+**Stopping the whole update.** Nothing is published, and the site keeps yesterday's data, if:
+- the download fails
+- the sheet stops being viewable by link
+- a column header is renamed or removed
+- fewer than 60% of rows pass
+- valid incidents drop by more than 10% overnight
+
+The job then fails and alerts the owner. It opens an issue labelled `data-update-failed`, assigned to `sdittgennewlines`, which GitHub emails to that account. The issue closes itself after the next successful run.
+
+**Direct email alerts (optional).** To email `sdittgen@newlinesinstitute.org` directly as well, add these repository secrets (Settings → Secrets and variables → Actions): `MAIL_SERVER`, `MAIL_PORT` (usually 587), `MAIL_USERNAME` and `MAIL_PASSWORD`. Use an account that can send mail, e.g. a Microsoft 365 or Gmail account with an app password.
+
+**Run it now.** Go to Actions → Nightly data update → Run workflow. To check the sheet without publishing: `python3 tools/update_data.py --dry-run`.
+
+**Don't rename these header columns:** Date & Time, Type, Severity, Location, Russia, China, USA, S7, Title, Description, Link (and Hide). Other columns are ignored.
 
 **Country profiles.** Edit the values in `data/countries.json`. Use `null` for "Not available".
 

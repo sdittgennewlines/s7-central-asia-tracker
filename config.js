@@ -7,15 +7,11 @@
 export const CONFIG = {
   /* ---------------------------------------------------------------- data */
 
-  // Snapshot of the "Incidents - Global" tab of the S7 + CAT Monitor sheet.
-  // Rebuild with tools/build_incidents.py, or switch to live mode below.
+  // Incidents, rebuilt every night at midnight (New York) from the
+  // "Incidents - Global" tab of the S7 + CAT Monitor sheet by
+  // tools/update_data.py. Rows that fail its checks are held back and
+  // listed in data/update-report.json.
   dataUrl: "data/incidents.json",
-
-  // Live mode (optional). In Google Sheets: File > Share > Publish to web >
-  // "Incidents - Global" tab > CSV. Paste the link here. Leave "" for the
-  // snapshot. In live mode, rows with TRUE in a column named "Hide" are left
-  // out (cell highlight colours are not included in CSV exports).
-  sheetCsvUrl: "",
 
   // Country fact sheets shown in the profile panel.
   countriesUrl: "data/countries.json",

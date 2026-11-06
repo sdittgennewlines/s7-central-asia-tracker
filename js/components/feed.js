@@ -10,6 +10,8 @@
  *
  * Reads:  state.country, state.filters
  * Writes: filters, country (clearing the country chip)
+ *
+ * An incident listing several countries appears under each of them.
  * DOM:    #feedList, #feedSummary, #feedSectors, #feedActor, #feedPeriod,
  *         #feedSearch, #feedScope
  *
@@ -17,7 +19,6 @@
  * the bottom (a "Show more" button at the end does the same for keyboards).
  */
 import { byId, domain, esc, fmtDate, monthLabel, plural } from "../util.js";
-import { REGION_WIDE } from "../data.js";
 import { feedIncidents, isFiltered } from "../filters.js";
 import { severityColor } from "../scales.js";
 
@@ -75,7 +76,7 @@ export function createFeed(ctx) {
     const sectors = inc.types.map((t) => `<span class="chip"><i class="chip-swatch" style="background:${sectorOf[t]?.color || "#999"}"></i>${esc(sectorOf[t]?.label || t)}</span>`).join("");
     const actors = inc.actors.map((a) => esc(actorLabel[a])).join(", ");
     return `<li class="feed-item">
-      <div class="feed-meta"><span>${fmtDate(inc.date)} · <b>${esc(inc.location || REGION_WIDE)}</b>${inc.scored ? "" : " (not scored)"}</span>${badge(inc.severity)}</div>
+      <div class="feed-meta"><span>${fmtDate(inc.date)} · <b>${inc.locations.map(esc).join(", ")}</b></span>${badge(inc.severity)}</div>
       <h3>${esc(inc.title)}</h3>
       <p class="feed-desc" tabindex="0" title="Show full description">${esc(inc.description)}</p>
       <div class="feed-tags">${sectors}</div>
@@ -90,16 +91,14 @@ export function createFeed(ctx) {
     actorSel.value = f.actor; periodSel.value = f.period;
     if (search.value !== f.search) search.value = f.search;
 
-    // Scope chips: selected country or map pin, plus "clear filters".
+    // Scope chips: selected country, plus "clear filters".
     const chips = [];
-    if (f.location) chips.push(`<span class="chip">Location: ${esc(f.location)} <button data-clear="location" aria-label="Clear location">×</button></span>`);
-    else if (state.country) chips.push(`<span class="chip">Country: ${esc(state.country)} <button data-clear="country" aria-label="Show all countries">×</button></span>`);
-    if (isFiltered({ ...f, location: null })) chips.push(`<button class="link-btn" data-clear="filters">Clear filters</button>`);
+    if (state.country) chips.push(`<span class="chip">Country: ${esc(state.country)} <button data-clear="country" aria-label="Show all countries">×</button></span>`);
+    if (isFiltered(f)) chips.push(`<button class="link-btn" data-clear="filters">Clear filters</button>`);
     scope.innerHTML = chips.join("");
     scope.querySelectorAll("[data-clear]").forEach((b) => b.addEventListener("click", () => {
       const k = b.dataset.clear;
       if (k === "country") store.set({ country: null });
-      else if (k === "location") setFilters({ location: null });
       else setFilters({ sectors: null, actor: "all", period: "all", search: "" });
     }));
 

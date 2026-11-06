@@ -4,7 +4,8 @@
  * For a country, an index (RII, CII, USEI or SIRI) and a month:
  *
  *   1. Take the incidents in that country and month that involve the
- *      index's actor (e.g. Russia for RII).
+ *      index's actor (e.g. Russia for RII). An incident listing several
+ *      countries counts for each of them.
  *   2. Rescale each incident's severity to 0-100: 1 -> 0, 2 -> 33.3,
  *      3 -> 66.7, 4 -> 100. Unrated incidents are skipped. (A rating of 0
  *      is treated as 1.)
@@ -51,7 +52,7 @@ export function createScorer(incidents, cfg) {
   /** Incidents behind one index cell. */
   function incidentsFor(country, indexKey, month) {
     const actor = actorOf[indexKey];
-    return incidents.filter((i) => i.location === country && i.date.startsWith(month) && i.actors.includes(actor));
+    return incidents.filter((i) => i.locations.includes(country) && i.date.startsWith(month) && i.actors.includes(actor));
   }
 
   /**

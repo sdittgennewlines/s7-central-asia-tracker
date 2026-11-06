@@ -8,16 +8,15 @@
  *     that sector's share of the sector tags. An incident tagged with two
  *     sectors adds to both segments. With a sector filter on, only the
  *     selected sectors appear.
+ *   - An incident listing several countries adds to each of their bubbles,
+ *     so the five numbers can add up to more than the number of incidents.
  *   - The five tracked countries are light blue; the selected one is darker.
- *   - Incidents located outside the five countries show as labelled pins
- *     ("RUSSIA · 5"), at the map edge or at a nearby anchor.
  *
  * Reads:  state.country, state.filters
- * Writes: country (click a country or bubble), filters.location (click a pin)
+ * Writes: country (click a country or bubble)
  * DOM:    #map
  */
 import { byId, esc, plural } from "../util.js";
-import { locationKey, REGION_WIDE } from "../data.js";
 import { passes, visibleSectors, isFiltered } from "../filters.js";
 import * as tooltip from "../tooltip.js";
 
@@ -47,16 +46,6 @@ const CONTEXT_LABELS = [
   ["Russia", 80, 54.6], ["China", 83, 38.2], ["Afghanistan", 66, 35.4],
   ["Iran", 53.5, 35.4], ["Pakistan", 72, 34.9], ["Caspian Sea", 51.2, 42.9, true]
 ];
-// Pins for places outside the five countries: [lon, lat, prefix, suffix, anchor].
-// Anything not listed stacks down the left edge.
-const PINS = {
-  Russia: [59.5, 55.35, "▲ ", "", "middle"],
-  China: [88.6, 44.2, "", " ▶", "end"],
-  Azerbaijan: [48.0, 40.9, "", "", "middle"],
-  Caspian: [51.6, 39.4, "", "", "middle"],
-  [REGION_WIDE]: [88.6, 55.35, "", "", "end"]
-};
-
 // Bubble size: area proportional to count, on a fixed scale so sizes stay
 // comparable as filters change. R is the OUTER radius (core + ring).
 const R_MIN = 16, R_MAX = 58, MAX_REF = 160;
@@ -88,22 +77,24 @@ export function createMap(ctx) {
   const pathOf = {};
   (geo?.features || []).forEach((f) => { pathOf[f.properties.name] = toPath(f); });
 
-  /** Count incidents and sector tags per country (and per outside place) under the filters. */
+  /**
+   * Count incidents and sector tags per country under the filters.
+   * Returns { byCountry, total } where total counts each incident once.
+   */
   function tally(f) {
     const byCountry = Object.fromEntries(cfg.scoredCountries.map((c) => [c, { n: 0, sectors: {} }]));
-    const outside = {};
+    let total = 0;
     incidents.forEach((inc) => {
       if (!passes(inc, f)) return;
-      if (inc.scored) {
-        const t = byCountry[inc.location];
+      total++;
+      inc.locations.forEach((c) => {
+        const t = byCountry[c];
+        if (!t) return;
         t.n++;
         visibleSectors(inc, f).forEach((s) => { t.sectors[s] = (t.sectors[s] || 0) + 1; });
-      } else {
-        const k = PINS[inc.location] ? inc.location : locationKey(inc);
-        outside[k] = (outside[k] || 0) + 1;
-      }
+      });
     });
-    return { byCountry, outside };
+    return { byCountry, total };
   }
 
   /**
@@ -138,20 +129,9 @@ export function createMap(ctx) {
     return out.join("");
   }
 
-  /** A labelled pin for incidents outside the five countries. */
-  function pin(k, n, i, selected) {
-    const p = PINS[k] || [46.3, 53.6 - i * 1.25, "◀ ", "", "start"];
-    const text = `${p[2]}${k.toUpperCase()} · ${n}${p[3]}`;
-    const [px, py] = project(p[0], p[1]);
-    const w = text.length * 6.6 + 16;
-    const x = p[4] === "end" ? px - w : p[4] === "middle" ? px - w / 2 : px;
-    return `<g class="map-pin${selected ? " is-selected" : ""}" data-loc="${esc(k)}" tabindex="0" role="button"><rect x="${x.toFixed(0)}" y="${(py - 11).toFixed(0)}" width="${w.toFixed(0)}" height="22"/><text x="${(x + 8).toFixed(0)}" y="${(py + 4).toFixed(0)}">${esc(text)}</text></g>`;
-  }
-
   function render(state) {
     const f = state.filters;
-    const { byCountry, outside } = tally(f);
-    const shown = Object.values(byCountry).reduce((a, t) => a + t.n, 0) + Object.values(outside).reduce((a, b) => a + b, 0);
+    const { byCountry, total } = tally(f);
 
     if (!geo) { el.innerHTML = `<p class="map-fallback">The map could not load. The rest of the tracker is unaffected.</p>`; return; }
 
@@ -167,11 +147,8 @@ export function createMap(ctx) {
     });
     // 3. Bubbles.
     cfg.scoredCountries.forEach((c) => svg.push(bubble(c, byCountry[c], c === state.country)));
-    // 4. Pins for outside places.
-    let stacked = 0;
-    Object.keys(outside).sort((a, b) => outside[b] - outside[a]).forEach((k) => svg.push(pin(k, outside[k], PINS[k] ? 0 : stacked++, f.location === k)));
-    // 5. A one-line key in the corner (the sector colours are keyed by the feed's checkboxes).
-    svg.push(`<text class="map-key" x="14" y="${H - 14}">${plural(shown, "incident")}${isFiltered(f) ? " match the filters" : ""} · number = incidents · ring = share by sector</text>`);
+    // 4. A one-line key in the corner (the sector colours are keyed by the feed's checkboxes).
+    svg.push(`<text class="map-key" x="14" y="${H - 14}">${plural(total, "incident")}${isFiltered(f) ? " match the filters" : ""} · number = incidents in each country (multi-country incidents count in each) · ring = share by sector</text>`);
     svg.push("</g></svg>");
     el.innerHTML = svg.join("");
 
@@ -184,7 +161,7 @@ export function createMap(ctx) {
       tooltip.hide();
       const s = store.get();
       // Clicking the selected country again clears the selection.
-      store.set({ country: s.country === c ? null : c, filters: { ...s.filters, location: null } });
+      store.set({ country: s.country === c ? null : c });
     };
     const bubbleTip = (c) => {
       const t = byCountry[c];
@@ -197,13 +174,6 @@ export function createMap(ctx) {
       tooltip.bind(node, () => bubbleTip(c));
       node.addEventListener("click", () => select(c));
       node.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(c); } });
-    });
-    el.querySelectorAll(".map-pin").forEach((g) => {
-      const loc = g.dataset.loc;
-      const toggle = () => { tooltip.hide(); const f = store.get().filters; store.set({ filters: { ...f, location: f.location === loc ? null : loc } }); };
-      tooltip.bind(g, () => `<b>${esc(loc)}</b><br>Outside the five tracked countries. Shown in the feed, not counted in any index.`);
-      g.addEventListener("click", toggle);
-      g.addEventListener("keydown", (e) => { if (e.key === "Enter") toggle(); });
     });
   }
 

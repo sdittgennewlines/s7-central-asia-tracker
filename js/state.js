@@ -9,7 +9,7 @@
  *   country   selected scored country ("Kazakhstan"), or null for the
  *             regional overview (the default on first load)
  *   filters   incident filters shared by the map and the feed
- *             (see filters.js): { sectors, actor, period, search, location }
+ *             (see filters.js): { sectors, actor, period, search }
  *   window    the breakdown's time window: { end: "2026-09", span: "1"|"3"|"all" }
  *   range     time span of the line chart: "3" | "6" | "all" (months)
  *   indices   index keys drawn on the line chart, e.g. ["RII", "CII"]

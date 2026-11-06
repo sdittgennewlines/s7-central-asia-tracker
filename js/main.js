@@ -53,7 +53,7 @@ async function start() {
   const months = monthsIn(inc.incidents);
   const store = createStore({
     country: CONFIG.defaultCountry,
-    filters: { sectors: null, actor: "all", period: "all", search: "", location: null },
+    filters: { sectors: null, actor: "all", period: "all", search: "" },
     window: { end: months[months.length - 1], span: "1" },
     range: "all",
     indices: CONFIG.indices.map((ix) => ix.key)
@@ -70,8 +70,8 @@ async function start() {
   const dates = inc.incidents.map((i) => i.date).sort();
   byId("dataNote").textContent =
     `Data: ${inc.incidents.length} incidents, ${fmtDate(dates[0])} to ${fmtDate(dates[dates.length - 1])}. ` +
-    (inc.live ? "Loaded live from the Central Asia Center's incident sheet." : `Snapshot of the Central Asia Center's incident sheet${inc.generated ? `, taken ${fmtDate(inc.generated)}` : ""}.`) +
-    " Incidents with unverified source links are held back until checked.";
+    `Updated nightly from the Central Asia Center's incident log${inc.updatedAt ? `; last updated ${fmtDate(inc.updatedAt.slice(0, 10))}` : ""}. ` +
+    "Incidents still being checked by analysts are held back until complete.";
 
   renderAll(store.get());
   if (window.ResizeObserver) new ResizeObserver(postHeight).observe(document.body);

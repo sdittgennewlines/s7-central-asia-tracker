@@ -13,9 +13,7 @@
  *   actor     "all"       or an actor key (Russia, China, USA, S7)
  *   period    "all"       or a month key ("2026-10")
  *   search    ""          free text matched against title + description
- *   location  null        a non-scored place picked from a map pin
  */
-import { locationKey } from "./data.js";
 
 /** True if the incident passes the sector/actor/period/search filters. */
 export function passes(inc, f) {
@@ -32,17 +30,12 @@ export function visibleSectors(inc, f) {
   return f.sectors ? inc.types.filter((t) => f.sectors.includes(t)) : inc.types;
 }
 
-/** Incidents for the feed: filters + selected country (or picked location). */
+/** Incidents for the feed: filters + selected country (an incident in several countries shows in each). */
 export function feedIncidents(incidents, state) {
-  const f = state.filters;
-  return incidents.filter((i) => {
-    if (!passes(i, f)) return false;
-    if (f.location) return locationKey(i) === f.location;
-    return state.country ? i.location === state.country : true;
-  });
+  return incidents.filter((i) => passes(i, state.filters) && (!state.country || i.locations.includes(state.country)));
 }
 
 /** True when any filter is narrowing the incidents. */
 export function isFiltered(f) {
-  return f.sectors !== null || f.actor !== "all" || f.period !== "all" || !!f.search.trim() || !!f.location;
+  return f.sectors !== null || f.actor !== "all" || f.period !== "all" || !!f.search.trim();
 }

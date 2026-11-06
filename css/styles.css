@@ -114,11 +114,6 @@ body { margin: 0; background: #fff; }
 .s7cat .map-bubble-name { font: 500 12px Roboto, sans-serif; letter-spacing: .8px; text-transform: uppercase; fill: var(--ink); paint-order: stroke; stroke: rgba(255,255,255,.9); stroke-width: 3px; pointer-events: none; }
 .s7cat .map-bubble.is-selected .map-bubble-name { font-weight: 700; }
 .s7cat .map-key { font: 400 11.5px Roboto, sans-serif; fill: var(--ink-2); paint-order: stroke; stroke: rgba(238,243,247,.9); stroke-width: 3px; }
-.s7cat .map-pin { cursor: pointer; }
-.s7cat .map-pin rect { fill: #fff; stroke: var(--ink); }
-.s7cat .map-pin text { font: 500 11px Roboto, sans-serif; letter-spacing: .5px; fill: var(--ink); }
-.s7cat .map-pin:hover rect, .s7cat .map-pin.is-selected rect { fill: var(--ink); }
-.s7cat .map-pin:hover text, .s7cat .map-pin.is-selected text { fill: #fff; }
 
 /* ------------------------------------------------------- Country summary */
 .s7cat .cs-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 28px; margin-bottom: 14px; }
