@@ -58,7 +58,7 @@ Each index is computed per country, per actor, per month. The code is in `js/ind
 4. Each sector contributes **12.5%**, so `index = Σ (sector score × 0.125)`, on a 0–100 scale.
 5. If an actor has no incidents in a country that month, its index is 0.
 6. Over several months (e.g. 3 months ending in September, or all time ending in June), the score is the **average of the monthly scores**. Months with no incidents count as 0.
-7. are scored on the page.** The current month (New York time) is still collecting incidents, so its indices would be artificially low. Its incidents show in the feed and on the map right away; its indices appear once the month ends.
+7. **Only completed months are scored on the page.** The current month (New York time) is still collecting incidents, so its indices would be artificially low. Its incidents show in the feed and on the map right away; its indices appear once the month ends.
 
 On the map, each country's bubble shows how many incidents pass the feed's filters. The ring around it splits those incidents by sector, and an incident tagged with several sectors counts in each. Severity describes individual incidents only. Only the five republics are scored. Incidents located elsewhere appear on the map and in the feed.
 
