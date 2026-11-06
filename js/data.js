@@ -38,6 +38,32 @@ export async function loadIncidents(cfg) {
   return { incidents, updatedAt: snap.updatedAt || snap.generated };
 }
 
+/** The current month in New York ("2026-11"), regardless of the viewer's time zone. */
+export function currentMonthKey(timeZone = "America/New_York", now = new Date()) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit" }).formatToParts(now).map((x) => [x.type, x.value]));
+  return `${p.year}-${p.month}`;
+}
+
+/**
+ * Months that indices are shown for: every month from the first incident up
+ * to the last COMPLETED month (the current month is still collecting
+ * incidents, so its scores would be artificially low). Months with no
+ * incidents are included, since they score 0.
+ */
+export function completedMonths(incidents, timeZone) {
+  const first = monthsIn(incidents)[0];
+  const current = currentMonthKey(timeZone);
+  const out = [];
+  if (!first) return out;
+  let [y, m] = first.split("-").map(Number);
+  for (let key = first; key < current; ) {
+    out.push(key);
+    m += 1; if (m > 12) { m = 1; y += 1; }
+    key = `${y}-${String(m).padStart(2, "0")}`;
+  }
+  return out;
+}
+
 /** Sorted list of month keys ("2026-01" ...) present in the incidents. */
 export function monthsIn(incidents) {
   return [...new Set(incidents.map((i) => i.date.slice(0, 7)))].sort();

@@ -23,7 +23,8 @@ const RANGES = [
 ];
 
 export function createIndexChart(ctx) {
-  const { cfg, months, scorer, store } = ctx;
+  // Only completed months: the current month's scores would be artificially low.
+  const { cfg, indexMonths: months, scorer, store } = ctx;
   const el = byId("indexChart");
   const toggles = byId("indexToggles");
   const rangeSeg = byId("rangeSeg");
@@ -45,7 +46,7 @@ export function createIndexChart(ctx) {
   rangeSeg.innerHTML = RANGES.map((r) => `<button data-range="${r.key}">${r.label}</button>`).join("");
   rangeSeg.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => store.set({ range: b.dataset.range })));
 
-  /** Months shown for a range key, ending at the latest month with data. */
+  /** Months shown for a range key, ending at the last completed month. */
   function visibleMonths(range) {
     return range === "all" ? months : months.slice(-Number(range));
   }

@@ -28,6 +28,11 @@ export const CONFIG = {
   // anywhere else still appear on the map and in the feed.
   scoredCountries: ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"],
 
+  // Time zone that decides when a month is over. Indices are only shown for
+  // completed months; the current month's incidents appear in the feed and
+  // on the map straight away but count toward indices once the month ends.
+  timeZone: "America/New_York",
+
   // Country selected when the page first loads (null = none: the page opens
   // on the regional overview).
   defaultCountry: null,

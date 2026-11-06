@@ -17,7 +17,7 @@
  * `components` list below.
  */
 import { CONFIG } from "../config.js";
-import { loadIncidents, loadJSON, monthsIn } from "./data.js";
+import { loadIncidents, loadJSON, monthsIn, completedMonths, currentMonthKey } from "./data.js";
 import { createScorer } from "./indices.js";
 import { createStore } from "./state.js";
 import { byId, fmtDate } from "./util.js";
@@ -50,15 +50,22 @@ async function start() {
   ]);
 
   // 2. Shared context handed to every component.
+  // `months`: every month with incidents (feed period filter).
+  // `indexMonths`: completed months only (chart, breakdown, country table):
+  // the current month's indices appear once it is over.
   const months = monthsIn(inc.incidents);
+  const indexMonths = completedMonths(inc.incidents, CONFIG.timeZone);
   const store = createStore({
     country: CONFIG.defaultCountry,
     filters: { sectors: null, actor: "all", period: "all", search: "" },
-    window: { end: months[months.length - 1], span: "1" },
+    window: { end: indexMonths[indexMonths.length - 1], span: "1" },
     range: "all",
     indices: CONFIG.indices.map((ix) => ix.key)
   });
-  const ctx = { cfg: CONFIG, incidents: inc.incidents, months, geo, profiles, store, scorer: createScorer(inc.incidents, CONFIG) };
+  const ctx = {
+    cfg: CONFIG, incidents: inc.incidents, months, indexMonths, inProgress: currentMonthKey(CONFIG.timeZone),
+    geo, profiles, store, scorer: createScorer(inc.incidents, CONFIG)
+  };
 
   // 3. Components. Order doesn't matter; each owns its own DOM.
   const components = [createMap, createFeed, createCountrySummary, createBreakdown, createIndexChart].map((make) => make(ctx));

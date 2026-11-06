@@ -14,6 +14,8 @@
  *   the same window (see indexTable.js), so the block is never empty.
  *
  * Window scores are the average of the monthly scores (see indices.js).
+ * Only completed months can be chosen; the current month is still
+ * collecting incidents.
  *
  * Reads:  state.country, state.window
  * Writes: window (controls), country (rows of the country table)
@@ -41,12 +43,14 @@ export function windowLabel(keys) {
 }
 
 export function createBreakdown(ctx) {
-  const { cfg, months, scorer, store } = ctx;
+  // Only completed months: the current month's scores would be artificially low.
+  const { cfg, indexMonths: months, inProgress, scorer, store } = ctx;
   const el = byId("breakdown");
   const title = byId("breakdownTitle");
   const sub = byId("breakdownSub");
   const endSel = byId("windowEnd"), prev = byId("windowPrev"), next = byId("windowNext"), spanSeg = byId("windowSpan");
   const maxPoints = 100 / cfg.sectors.length; // 12.5 with eight sectors
+  const inProgressNote = `${monthLabel(inProgress)} is still in progress; its indices appear once the month ends.`;
 
   /* ---- window controls (built once) ---- */
   endSel.innerHTML = [...months].reverse().map((m) => `<option value="${m}">${monthLabel(m)}</option>`).join("");
@@ -99,11 +103,11 @@ export function createBreakdown(ctx) {
 
     if (state.country) {
       title.textContent = `How ${state.country}'s indices add up`;
-      sub.textContent = `${windowLabel(keys)}. Each index is built from eight sectors of equal weight.`;
+      sub.textContent = `${windowLabel(keys)}. Each index is built from eight sectors of equal weight. ${inProgressNote}`;
       renderSectorTable(state.country, keys);
     } else {
       title.textContent = "The four indices across Central Asia";
-      sub.textContent = `${windowLabel(keys)}. Each index runs from 0 to 100. Numbers in brackets are incident counts. Select a country to see how its scores add up.`;
+      sub.textContent = `${windowLabel(keys)}. Each index runs from 0 to 100. Numbers in brackets are incident counts. Select a country to see how its scores add up. ${inProgressNote}`;
       renderCountryTable(el, ctx, keys);
     }
   }
