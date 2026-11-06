@@ -220,8 +220,11 @@ def build(text, previous_count, today):
     seen = {}
     nonblank = 0
 
+    # A row counts only if it has incident content. Empty rows below the data
+    # still carry unticked checkboxes (FALSE), so those columns are ignored here.
+    content_cols = [cols[k] for k in ("date", "type", "severity", "location", "title", "description", "link")]
     for i, cells in enumerate(rows, start=2):  # sheet row numbers (header is row 1)
-        if not any(squash(c) for c in cells):
+        if not any(squash(cells[c]) for c in content_cols if c < len(cells)):
             continue
         nonblank += 1
         if "hide" in cols and cols["hide"] < len(cells) and is_true(cells[cols["hide"]]):
