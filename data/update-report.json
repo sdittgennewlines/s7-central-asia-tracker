@@ -1,187 +1,88 @@
 {
-  "updatedAt": "2026-11-06T15:30-05:00",
-  "rowsInSheet": 540,
+  "updatedAt": "2026-11-09T11:29-05:00",
+  "rowsInSheet": 539,
   "hidden": 0,
-  "published": 509,
+  "published": 512,
   "heldBack": [
     {
-      "row": 120,
-      "title": "Kazakhstan and China Build Digital Hub in Almaty",
-      "problems": [
-        "severity is empty"
-      ]
-    },
-    {
-      "row": 126,
-      "title": "Russia, Kazakhstan Expect $30 Billion Trade in 2026",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 127,
-      "title": "Putin Request Negotiations with Kazakhstan and Uzbekistan on Mutual Arms Supplies",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 129,
-      "title": "China and Kazakhstan Launch Health Center",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 131,
-      "title": "Chinese Airline Will Launch New Flights to Kazakhstan",
-      "problems": [
-        "severity is empty",
-        "no actor ticked (Russia, China, USA or S7)"
-      ]
-    },
-    {
-      "row": 146,
-      "title": "Kazakhstan Designated Compliant with US Fiscal Transparency Requirements",
-      "problems": [
-        "severity is empty"
-      ]
-    },
-    {
-      "row": 174,
-      "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 183,
-      "title": "Chinese Firm Signs EPC Contract for 700 MW Solar Project in Kazakhstan",
-      "problems": [
-        "no actor ticked (Russia, China, USA or S7)"
-      ]
-    },
-    {
-      "row": 202,
+      "row": 51,
       "title": "Kazakhstan, Kyrgyzstan Foreign Ministers Emphasize Importance of Economic Cooperation in Meeting",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 262,
-      "title": "Kyrgyzstan Increases Berry Exports to Russia",
-      "problems": [
-        "link is not a single web address"
-      ]
-    },
-    {
-      "row": 266,
-      "title": "Kyrgyzstan Designated Compliant with US Fiscal Transparency Requirements",
-      "problems": [
-        "severity is empty"
-      ]
-    },
-    {
-      "row": 270,
-      "title": "Russia, Kyrgyzstan Expand Interior Ministry Offices",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 274,
-      "title": "Kyrgyzstan's Economy Rises 11% in 2025",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 331,
-      "title": "Tajikistan and Asian Development Bank Discuss Water Management",
-      "problems": [
-        "no actor ticked (Russia, China, USA or S7)"
-      ]
-    },
-    {
-      "row": 333,
-      "title": "Tajikistan to Build Fiber-Optic Lines With China",
-      "problems": [
-        "severity is empty"
-      ]
-    },
-    {
-      "row": 334,
-      "title": "Russia Resumes Funding for Russian-Tajik Slavonic University",
-      "problems": [
-        "severity is empty"
-      ]
-    },
-    {
-      "row": 342,
-      "title": "Russia Emphasizes Tajik-Afghan Border Security",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 389,
-      "title": "Kazakhstan, Turkmenistan Sign Friendship Treaty",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 392,
-      "title": "Turkmenistan, Russia Convene on Bilateral Relations",
-      "problems": [
-        "no actor ticked (Russia, China, USA or S7)"
-      ]
-    },
-    {
-      "row": 399,
-      "title": "Russia Reaffirms Commitment to Partnership with Turkmenistan",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 413,
-      "title": "CSTO Foreign Ministers Meet on UNGA Sideline",
-      "problems": [
-        "no sector (Type) chosen"
-      ]
-    },
-    {
-      "row": 463,
+      "row": 257,
       "title": "Russia and Uzbekistan Expand Media and Communications Cooperation",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 469,
+      "row": 259,
+      "title": "Tajikistan and Asian Development Bank Discuss Water Management",
+      "problems": [
+        "no actor ticked (Russia, China, USA or S7)"
+      ]
+    },
+    {
+      "row": 276,
       "title": "Uzbekistan, China Partner in Localized Vaccine Production",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 470,
+      "row": 284,
+      "title": "Tajikistan to Build Fiber-Optic Lines With China",
+      "problems": [
+        "severity is empty"
+      ]
+    },
+    {
+      "row": 288,
       "title": "Unions Discuss Labor Rights in Changing Central Asia",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 471,
+      "row": 289,
       "title": "Uzbekistan Hosts Talks With China Railway Construction Over Mining Projects",
       "problems": [
         "severity is empty"
       ]
     },
     {
-      "row": 474,
+      "row": 294,
+      "title": "Kazakhstan and China Build Digital Hub in Almaty",
+      "problems": [
+        "severity is empty"
+      ]
+    },
+    {
+      "row": 295,
+      "title": "Turkmenistan, Russia Convene on Bilateral Relations",
+      "problems": [
+        "no actor ticked (Russia, China, USA or S7)"
+      ]
+    },
+    {
+      "row": 305,
+      "title": "Russia, Kazakhstan Expect $30 Billion Trade in 2026",
+      "problems": [
+        "no sector (Type) chosen"
+      ]
+    },
+    {
+      "row": 306,
+      "title": "Putin Request Negotiations with Kazakhstan and Uzbekistan on Mutual Arms Supplies",
+      "problems": [
+        "no sector (Type) chosen"
+      ]
+    },
+    {
+      "row": 309,
       "title": "Uzbekistan’s Uzatom, Russia’s Rosatom Collaborate on Nuclear Power Project",
       "problems": [
         "severity is empty",
@@ -189,28 +90,78 @@
       ]
     },
     {
-      "row": 481,
-      "title": "Eight Uzbeks Killed in Ukrainian Drone Attack",
+      "row": 310,
+      "title": "China and Kazakhstan Launch Health Center",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 485,
+      "row": 312,
+      "title": "Russia Resumes Funding for Russian-Tajik Slavonic University",
+      "problems": [
+        "severity is empty"
+      ]
+    },
+    {
+      "row": 321,
+      "title": "Chinese Airline Will Launch New Flights to Kazakhstan",
+      "problems": [
+        "severity is empty",
+        "no actor ticked (Russia, China, USA or S7)"
+      ]
+    },
+    {
+      "row": 352,
       "title": "Azerbaijan's Ambassador Meets With Uzbekistan Minister of Investments, Industry, and Trade, Laziz Kudratov",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 496,
+      "row": 369,
+      "title": "Kyrgyzstan Increases Berry Exports to Russia",
+      "problems": [
+        "link is not a single web address"
+      ]
+    },
+    {
+      "row": 383,
       "title": "Official Footage Confirms Uzbekistan's Use of Chinese Fighter Jets",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 498,
+      "row": 384,
+      "title": "Kazakhstan Designated Compliant with US Fiscal Transparency Requirements",
+      "problems": [
+        "severity is empty"
+      ]
+    },
+    {
+      "row": 385,
+      "title": "Kyrgyzstan Designated Compliant with US Fiscal Transparency Requirements",
+      "problems": [
+        "severity is empty"
+      ]
+    },
+    {
+      "row": 394,
+      "title": "Russia, Kyrgyzstan Expand Interior Ministry Offices",
+      "problems": [
+        "no sector (Type) chosen"
+      ]
+    },
+    {
+      "row": 395,
+      "title": "Russia Emphasizes Tajik-Afghan Border Security",
+      "problems": [
+        "no sector (Type) chosen"
+      ]
+    },
+    {
+      "row": 398,
       "title": "Uzbek Court Sentences Citizen for Joining Russia's War in Ukraine",
       "problems": [
         "no sector (Type) chosen",
@@ -218,20 +169,33 @@
       ]
     },
     {
-      "row": 499,
+      "row": 399,
       "title": "Russia, Uzbekistan Increase Railway Digitalization",
+      "problems": [
+        "no actor ticked (Russia, China, USA or S7)"
+      ]
+    },
+    {
+      "row": 414,
+      "title": "Kyrgyzstan's Economy Rises 11% in 2025",
+      "problems": [
+        "no sector (Type) chosen"
+      ]
+    },
+    {
+      "row": 468,
+      "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
+      "problems": [
+        "no sector (Type) chosen"
+      ]
+    },
+    {
+      "row": 526,
+      "title": "Chinese Firm Signs EPC Contract for 700 MW Solar Project in Kazakhstan",
       "problems": [
         "no actor ticked (Russia, China, USA or S7)"
       ]
     }
   ],
-  "notes": [
-    {
-      "row": 2,
-      "title": "Azerbaijan Hosts Baku Energy Week 2026",
-      "notes": [
-        "location \"Azerbaijan\" is not one of the five countries and was left out"
-      ]
-    }
-  ]
+  "notes": []
 }
