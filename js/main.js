@@ -27,6 +27,9 @@ import { createIndexChart } from "./components/indexChart.js";
 import { createBreakdown } from "./components/breakdown.js";
 import { createFeed } from "./components/feed.js";
 import { renderReports } from "./components/reports.js";
+import { initExportDialog } from "./exportDialog.js";
+
+window.s7Started = true; // tells the safety net in index.html that scripts loaded
 
 const root = document.querySelector(".s7cat");
 
@@ -68,8 +71,16 @@ async function start() {
   };
 
   // 3. Components. Order doesn't matter; each owns its own DOM.
-  const components = [createMap, createFeed, createCountrySummary, createBreakdown, createIndexChart].map((make) => make(ctx));
-  const renderAll = (state) => { components.forEach((c) => c.render(state)); postHeight(); };
+  // Each component is created and rendered in isolation, so one failing
+  // can't take down the rest of the page.
+  const components = [createMap, createFeed, createCountrySummary, createBreakdown, createIndexChart].map((make) => {
+    try { return make(ctx); } catch (err) { console.error(`${make.name} failed to start`, err); return null; }
+  }).filter(Boolean);
+  const renderAll = (state) => {
+    components.forEach((c) => { try { c.render(state); } catch (err) { console.error("render failed", err); } });
+    postHeight();
+  };
+  initExportDialog();
   store.subscribe(renderAll);
 
   // 4. Static sections.

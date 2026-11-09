@@ -4,12 +4,18 @@
  * indices to show and the time span. Clicking a month makes it the end of
  * the breakdown's window, so the two stay in step.
  *
+ * Download: CSV / Excel (all four indices, every month in view) or PNG
+ * (the lines currently shown).
+ *
  * Reads:  state.country, state.window.end, state.range, state.indices
  * Writes: indices (toggle chips), range (time-span buttons), window.end (click)
  * DOM:    #indexChart (chart), #indexToggles, #rangeSeg, #indexChartTitle
  */
 import { byId, esc, fmtIndex, monthAbbr, monthLabel } from "../util.js";
 import * as tooltip from "../tooltip.js";
+import { openExport, downloadButton } from "../exportDialog.js";
+import { lineImage } from "../export/pngCharts.js";
+import { windowLabel } from "./breakdown.js";
 
 // Chart geometry in SVG units (scaled to the container width by CSS).
 const W = 460, H = 300;
@@ -30,6 +36,27 @@ export function createIndexChart(ctx) {
   const rangeSeg = byId("rangeSeg");
   const title = byId("indexChartTitle");
   const cell = el.closest(".cell-chart");
+
+  /* ---- download (built once; the spec is made from the current state on click) ---- */
+  byId("indexChartDownload").innerHTML = downloadButton("indices");
+  byId("indexChartDownload").querySelector("button").addEventListener("click", () => openExport(exportSpec(store.get())));
+
+  /** Everything the Download pop-up needs for the chart as currently shown. */
+  function exportSpec(state) {
+    const ms = visibleMonths(state.range);
+    const round = (v) => Math.round(v * 10) / 10;
+    const all = cfg.indices.map((ix) => ({ ix, values: scorer.series(state.country, ix.key, ms).map((p) => round(p.value)) }));
+    const shown = all.filter((s) => state.indices.includes(s.ix.key));
+    const title = `Influence indices: ${state.country}`;
+    const subtitle = `${windowLabel(ms)} · monthly index, 0–100 · completed months`;
+    return {
+      title, subtitle,
+      filename: `s7-influence-indices-${state.country}-${ms[ms.length - 1]}`,
+      columns: [{ label: "Month", width: 16 }, ...cfg.indices.map((ix) => ({ label: `${ix.key} (${ix.name})`, width: 22 }))],
+      rows: ms.map((m, i) => [monthLabel(m), ...all.map((s) => s.values[i])]),
+      image: () => lineImage({ title, subtitle, months: ms.map(monthAbbr), series: shown.map((s) => ({ label: s.ix.key, name: `${s.ix.key} · ${s.ix.name}`, color: s.ix.color, values: s.values })) })
+    };
+  }
   let tableOpen = false;
 
   /* ---- controls (built once) ---- */

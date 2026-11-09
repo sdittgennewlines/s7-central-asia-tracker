@@ -67,6 +67,12 @@ export const CONFIG = {
     { key: "SIRI", actor: "S7", actorLabel: "S7+ states", name: "S7+ Integration Readiness Index", color: "#1baf7a" }
   ],
 
+  /* ----------------------------------------------------------- downloads */
+
+  // Printed on every downloaded image and Excel file.
+  copyright: "© 2026 The New Lines Institute",
+  credit: "Central Asia Center · S7+ Central Asia Geopolitical Tracker",
+
   /* ------------------------------------------------------------ severity */
 
   // Incident severity levels (from the sheet's Legend tab). Severity applies

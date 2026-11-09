@@ -256,6 +256,25 @@ body { margin: 0; background: #fff; }
 .s7cat .foot-name { font-family: 'Libre Caslon Text', serif; font-size: 17px; }
 .s7cat .foot-sub { font-size: 12.5px; color: var(--muted); }
 
+/* ------------------------------------------- Download button + pop-up */
+/* Same design as the GFP platform's download dialog (js/exportDialog.js). */
+.s7cat .head-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.s7cat .dl-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-size: 12.5px; font-weight: 500; letter-spacing: .3px; cursor: pointer; flex: 0 0 auto; }
+.s7cat .dl-btn:hover { border-color: var(--ink); }
+.s7cat .cell-chart.is-empty #indexChartDownload { display: none; }
+.s7cat .overlay { position: fixed; inset: 0; z-index: 60; background: rgba(27, 23, 37, .55); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.s7cat .dialog { position: relative; width: 100%; max-width: 600px; max-height: 100%; overflow-y: auto; background: #fff; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; }
+.s7cat .dialog .x { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border: 0; background: none; cursor: pointer; font-size: 26px; color: var(--ink); }
+.s7cat .dialog-head { display: flex; flex-direction: column; gap: 6px; padding-right: 40px; }
+.s7cat .dialog h2 { font-size: 26px; line-height: 1.3; }
+.s7cat .dialog-sub { font-size: 14px; color: var(--ink-2); }
+.s7cat .export-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.s7cat .export-opt { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; text-align: left; padding: 16px; border: 1px solid var(--line); border-top: 3px solid var(--gold); background: #fff; cursor: pointer; color: var(--ink); }
+.s7cat .export-opt:hover, .s7cat .export-opt:focus-visible { background: var(--panel); border-color: var(--ink); border-top-color: var(--gold); }
+.s7cat .export-opt .f { font-family: 'Libre Caslon Text', Georgia, serif; font-size: 19px; font-weight: 700; }
+.s7cat .export-opt .h { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.s7cat kbd { font-family: inherit; font-size: .9em; padding: 1px 5px; border: 1px solid var(--line); background: #fff; }
+
 /* --------------------------------------------------------------- Tooltip */
 .s7cat .tooltip { position: fixed; z-index: 50; pointer-events: none; background: var(--ink); color: #fff; padding: 10px 12px; font-size: 12.5px; line-height: 1.5; max-width: 300px; box-shadow: 0 8px 24px rgba(27,23,37,.18); }
 .s7cat .tooltip b { font-weight: 500; }

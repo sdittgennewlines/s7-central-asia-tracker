@@ -19,6 +19,10 @@ js/
   data.js                  loading the data files
   indices.js               the scoring model, monthly and over time windows (pure functions)
   scales.js                colour scales shared by every component
+  exportDialog.js          the "Download" pop-up (CSV / Excel / PNG), same as the GFP platform
+  download.js              saving files to the reader's computer (shared with the GFP)
+  export/pngCharts.js      the image versions of the charts, with the copyright frame
+  lib/xlsx.js, lib/zip.js  Excel writer, no dependencies (shared with the GFP)
   tooltip.js               the one floating tooltip
   util.js                  formatting helpers
   components/
@@ -37,6 +41,7 @@ data/
   reports.json             report links
 assets/new-lines-logo.png
 tools/update_data.py       nightly sheet -> incidents.json update, with all the checks
+tools/stamp.mjs            run before pushing code changes (see "Changing the code")
 tools/clip_geo.py          one-off: crop the map borders
 .github/workflows/         the nightly schedule
 ```
@@ -47,6 +52,28 @@ tools/clip_geo.py          one-off: crop the map borders
 2. Each component in `js/components/` is created with a shared `ctx` (config, incidents, scorer, store) and returns `{ render(state) }`.
 3. When the user clicks something, the component calls `store.set({...})`. Every component's `render` then runs with the new state.
 4. Components never call each other. To add one, create `js/components/<name>.js` and add it to the list in `main.js`.
+
+### Changing the code
+
+After editing any file in `js/`, `config.js` or `css/`, run **`node tools/stamp.mjs`** before pushing. It adds a fingerprint to every file's address in `index.html`, so browsers fetch the new version of each changed file instead of mixing old and new copies right after an update. That mix-up once blanked the GFP platform.
+
+If it is forgotten, nothing breaks outright: each component starts in isolation, and a "couldn't start" message replaces a blank page.
+
+The nightly data update doesn't need it, because the data is always fetched fresh.
+
+## Downloads
+
+The line chart and the "How ___ adds up" block each have a **Download** button. It opens the same pop-up as the GFP platform:
+- **CSV**: the data only.
+- **Excel**: the data with the title above and the copyright below.
+- **PNG**: the chart redrawn in a standard frame with "© 2026 The New Lines Institute".
+
+What each one contains:
+- **Line chart:** all four indices for every month in view. The PNG shows only the indices toggled on.
+- **"How ___ adds up", with a country selected:** points and incident counts per sector and index, plus the index score, for the chosen window.
+- **The same block with no country selected:** the four indices and incident counts for the five countries.
+
+The copyright and credit lines are set in `config.js`.
 
 ## How the indices are calculated
 

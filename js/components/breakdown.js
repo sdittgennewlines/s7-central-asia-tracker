@@ -17,6 +17,8 @@
  * Only completed months can be chosen; the current month is still
  * collecting incidents.
  *
+ * Download: CSV / Excel / PNG of whichever table is showing.
+ *
  * Reads:  state.country, state.window
  * Writes: window (controls), country (rows of the country table)
  * DOM:    #breakdown, #breakdownTitle, #breakdownSub, #windowEnd,
@@ -26,6 +28,8 @@ import { byId, esc, fmtIndex, monthLabel, plural } from "../util.js";
 import { windowMonths } from "../indices.js";
 import { renderCountryTable } from "./indexTable.js";
 import * as tooltip from "../tooltip.js";
+import { openExport, downloadButton } from "../exportDialog.js";
+import { breakdownImage, countryTableImage } from "../export/pngCharts.js";
 
 const SPANS = [
   { key: "1", label: "1 month" },
@@ -60,6 +64,57 @@ export function createBreakdown(ctx) {
   prev.addEventListener("click", () => { const i = months.indexOf(store.get().window.end); if (i > 0) setWindow({ end: months[i - 1] }); });
   next.addEventListener("click", () => { const i = months.indexOf(store.get().window.end); if (i < months.length - 1) setWindow({ end: months[i + 1] }); });
   spanSeg.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => setWindow({ span: b.dataset.span })));
+
+  /* ---- download (spec made from the current state on click) ---- */
+  byId("breakdownDownload").innerHTML = downloadButton("breakdown");
+  byId("breakdownDownload").querySelector("button").addEventListener("click", () => openExport(exportSpec(store.get())));
+
+  /** Everything the Download pop-up needs for the table currently showing. */
+  function exportSpec(state) {
+    const keys = windowMonths(months, state.window.end, state.window.span);
+    const round = (v) => Math.round(v * 10) / 10;
+    const period = windowLabel(keys);
+    const avg = keys.length > 1 ? " · average of monthly scores" : "";
+    const span = keys.length > 1 ? `${keys[0]}-to-${keys[keys.length - 1]}` : keys[0]; // for file names
+
+    if (state.country) {
+      const results = cfg.indices.map((ix) => scorer.windowIndex(state.country, ix.key, keys));
+      const title = `How ${state.country}'s indices add up`;
+      const subtitle = `${period} · points per sector (each sector up to ${maxPoints})${avg}`;
+      return {
+        title, subtitle,
+        filename: `s7-index-breakdown-${state.country}-${span}`,
+        columns: [{ label: "Sector", width: 26 }, ...cfg.indices.flatMap((ix) => [{ label: `${ix.key} points`, width: 12 }, { label: `${ix.key} incidents`, width: 13 }])],
+        rows: [
+          ...cfg.sectors.map((sec, si) => [sec.label, ...results.flatMap((r) => [round(r.sectors[si].points), r.sectors[si].n])]),
+          ["Index score (0–100)", ...results.flatMap((r) => [round(r.value), r.incidents])]
+        ],
+        image: () => breakdownImage({
+          title, subtitle, max: maxPoints,
+          sectors: cfg.sectors.map((s) => ({ label: s.label, color: s.color })),
+          indices: cfg.indices.map((ix) => ({ key: ix.key, short: ix.actorLabel })),
+          cells: cfg.sectors.map((_, si) => results.map((r) => r.sectors[si].points)),
+          totals: results.map((r) => r.value),
+          totalLabel: keys.length > 1 ? "Average index score" : "Index score"
+        })
+      };
+    }
+
+    const grid = cfg.scoredCountries.map((c) => cfg.indices.map((ix) => scorer.windowIndex(c, ix.key, keys)));
+    const title = "The four indices across Central Asia";
+    const subtitle = `${period} · index, 0–100${avg}`;
+    return {
+      title, subtitle,
+      filename: `s7-indices-central-asia-${span}`,
+      columns: [{ label: "Country", width: 16 }, ...cfg.indices.flatMap((ix) => [{ label: `${ix.key} (${ix.name})`, width: 22 }, { label: `${ix.key} incidents`, width: 13 }])],
+      rows: cfg.scoredCountries.map((c, ci) => [c, ...grid[ci].flatMap((r) => [round(r.value), r.incidents])]),
+      image: () => countryTableImage({
+        title, subtitle, countries: cfg.scoredCountries,
+        indices: cfg.indices.map((ix) => ({ key: ix.key, name: ix.name })),
+        values: grid.map((row) => row.map((r) => ({ value: r.value, incidents: r.incidents })))
+      })
+    };
+  }
 
   /** Sector × index table for one country. */
   function renderSectorTable(country, keys) {
