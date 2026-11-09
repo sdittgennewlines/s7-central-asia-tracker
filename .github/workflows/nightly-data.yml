@@ -1,6 +1,6 @@
 # Nightly data update for the S7+ Central Asia Tracker.
 #
-# Every night at midnight New York time this job:
+# Every night, shortly after midnight New York time, this job:
 #   1. downloads the "Incidents - Global" tab of the Google Sheet as CSV,
 #   2. runs tools/update_data.py, which checks every row and the batch as a
 #      whole (see that file for the rules),
@@ -20,11 +20,13 @@ name: Nightly data update
 
 on:
   schedule:
-    # GitHub schedules run in UTC. Midnight in New York is 04:00 UTC in
-    # summer (EDT) and 05:00 UTC in winter (EST), so run at both and let the
-    # first step skip the one that isn't midnight locally.
-    - cron: "0 4 * * *"
-    - cron: "0 5 * * *"
+    # GitHub's scheduled runs can start hours late (we saw 6-9 hours in
+    # Nov 2026), so don't rely on one punctual run. Check every hour (at :17,
+    # away from the busy top of the hour); the first step skips unless
+    # today's update (New York date) hasn't happened yet. Normally the update
+    # lands within an hour after midnight, and a late or failed run is simply
+    # caught up by the next hourly check.
+    - cron: "17 * * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -49,18 +51,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Only run once, just after midnight New York time (or when started by hand)
+      - name: Only run if today's update hasn't happened yet (or when started by hand)
         id: gate
         run: |
-          hour=$(TZ=America/New_York date +%-H)
           today=$(TZ=America/New_York date +%F)
           last=$(python3 -c "import json;print(json.load(open('data/update-report.json')).get('updatedAt','')[:10])" 2>/dev/null || true)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          elif [ "$hour" -lt 4 ] && [ "$last" != "$today" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$last" != "$today" ]; then
+            echo "Running (New York date $today; last update $last)."
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Skipping this trigger (New York hour $hour; last update $last)."
+            echo "Today's update already done ($last); nothing to do."
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -104,7 +104,8 @@ jobs:
 
       # ------------------------------------------------ alerts on total failure
 
-      - name: Open (or update) a failure alert
+      - name: Open (or update) a failure alert, at most once a day
+        id: alert
         if: failure() && steps.gate.outputs.run == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -115,16 +116,21 @@ jobs:
             '```' "$reason" '```')
           body="$body"$'\n\n'"Run log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"$'\n\n'"Fix the sheet, then re-run: Actions > Nightly data update > Run workflow."
           gh label create "$ALERT_LABEL" --color B60205 --description "Nightly data update stopped" --force >/dev/null
-          open=$(gh issue list --label "$ALERT_LABEL" --state open --json number -q '.[0].number')
+          open=$(gh issue list --label "$ALERT_LABEL" --state open --json number,updatedAt -q '.[] | "\(.number) \(.updatedAt)"' | head -n1)
+          today_utc=$(date -u +%F)
           if [ -n "$open" ]; then
-            gh issue comment "$open" --body "$body"
+            # A stopped update retries every hour; only add to the alert once a day.
+            num=${open%% *}; updated=${open#* }
+            if [ "${updated:0:10}" = "$today_utc" ]; then echo "Alert #$num already updated today."; exit 0; fi
+            gh issue comment "$num" --body "$body"
           else
             gh issue create --title "Nightly data update stopped" --label "$ALERT_LABEL" \
               --assignee "$ALERT_GITHUB_USER" --body "$body"
           fi
+          echo "posted=true" >> "$GITHUB_OUTPUT"   # lets the email step send once per alert
 
       - name: Email the alert directly (only if mail secrets are configured)
-        if: failure() && steps.gate.outputs.run == 'true' && env.MAIL_SERVER != ''
+        if: failure() && steps.alert.outputs.posted == 'true' && env.MAIL_SERVER != ''
         env:
           MAIL_PORT: ${{ secrets.MAIL_PORT }}
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}

@@ -91,9 +91,9 @@ On the map, each country's bubble shows how many incidents pass the feed's filte
 
 ## Updating the data
 
-### Incidents: automatic, every night at midnight (New York)
+### Incidents: automatic, every night just after midnight (New York)
 
-`.github/workflows/nightly-data.yml` runs `tools/update_data.py`, which downloads the **Incidents - Global** tab of the Google Sheet, checks it and republishes the site. Analysts just keep editing the sheet.
+`.github/workflows/nightly-data.yml` checks every hour and, the first time each day (New York date) it finds the day's update hasn't happened yet, runs `tools/update_data.py`. GitHub's scheduled runs can start hours late, so the job doesn't depend on a punctual midnight run; normally the update lands within an hour after midnight. The script which downloads the **Incidents - Global** tab of the Google Sheet, checks it and republishes the site. Analysts just keep editing the sheet.
 
 **Row checks.** A row is held back (and the rest still publish) if it has:
 - an invalid or future date
@@ -117,7 +117,7 @@ Held-back rows and the reasons are listed in [`data/update-report.json`](data/up
 - fewer than 60% of rows pass
 - valid incidents drop by more than 10% overnight
 
-The job then fails and alerts the owner. It opens an issue labelled `data-update-failed`, assigned to `sdittgennewlines`, which GitHub emails to that account. The issue closes itself after the next successful run.
+The job then fails and alerts the owner. It opens an issue labelled `data-update-failed`, assigned to `sdittgennewlines`, which GitHub emails to that account. A stopped update retries every hour, but the alert is updated (and emailed) at most once a day. The issue closes itself after the next successful run.
 
 **Direct email alerts (optional).** To email `sdittgen@newlinesinstitute.org` directly as well, add these repository secrets (Settings → Secrets and variables → Actions): `MAIL_SERVER`, `MAIL_PORT` (usually 587), `MAIL_USERNAME` and `MAIL_PASSWORD`. Use an account that can send mail, e.g. a Microsoft 365 or Gmail account with an app password.
 
