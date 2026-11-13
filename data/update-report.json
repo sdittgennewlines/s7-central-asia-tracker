@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-12T04:51-05:00",
-  "rowsInSheet": 543,
+  "updatedAt": "2026-11-13T02:58-05:00",
+  "rowsInSheet": 545,
   "hidden": 0,
   "published": 516,
   "heldBack": [
@@ -195,7 +195,48 @@
       "problems": [
         "no actor ticked (Russia, China, USA or S7)"
       ]
+    },
+    {
+      "row": 547,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "unknown sector \"NOTE to SELF: Plug incidents from China-Central Asia montor\"",
+        "severity is empty",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 548,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "unknown sector \"https://washingtonier.sharepoint.com/:w:/r/sites/SI/_layouts/15/Doc.aspx?sourcedoc=%7B0465adfe-e2b3-489e-9893-89e5d6d01cad%7D&action=editnew\"",
+        "severity is empty",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
     }
   ],
-  "notes": []
+  "notes": [
+    {
+      "row": 547,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 548,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    }
+  ]
 }
