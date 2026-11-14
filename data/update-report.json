@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-13T02:58-05:00",
-  "rowsInSheet": 545,
+  "updatedAt": "2026-11-14T06:29-05:00",
+  "rowsInSheet": 584,
   "hidden": 0,
-  "published": 516,
+  "published": 552,
   "heldBack": [
     {
       "row": 51,
@@ -183,40 +183,72 @@
       ]
     },
     {
-      "row": 468,
+      "row": 469,
       "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 526,
+      "row": 529,
       "title": "Chinese Firm Signs EPC Contract for 700 MW Solar Project in Kazakhstan",
       "problems": [
         "no actor ticked (Russia, China, USA or S7)"
       ]
     },
     {
-      "row": 547,
+      "row": 532,
+      "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
+      "problems": [
+        "link is empty"
+      ]
+    },
+    {
+      "row": 586,
       "title": "",
       "problems": [
         "date is empty",
-        "unknown sector \"NOTE to SELF: Plug incidents from China-Central Asia montor\"",
-        "severity is empty",
-        "Location is empty",
+        "no sector (Type) chosen",
+        "severity \"Country occuring in ->\" is not 1-4",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
         "link is empty"
       ]
     },
     {
-      "row": 548,
+      "row": 587,
       "title": "",
       "problems": [
         "date is empty",
-        "unknown sector \"https://washingtonier.sharepoint.com/:w:/r/sites/SI/_layouts/15/Doc.aspx?sourcedoc=%7B0465adfe-e2b3-489e-9893-89e5d6d01cad%7D&action=editnew\"",
-        "severity is empty",
-        "Location is empty",
+        "no sector (Type) chosen",
+        "severity \"Water\" is not 1-4",
+        "no Central Asian country in Location",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 588,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"Agriculture/industry\" is not 1-4",
+        "no Central Asian country in Location",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 589,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"Transport\" is not 1-4",
+        "no Central Asian country in Location",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
         "link is empty"
@@ -225,16 +257,33 @@
   ],
   "notes": [
     {
-      "row": 547,
+      "row": 586,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 548,
+      "row": 587,
       "title": "",
       "notes": [
+        "location \"Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
+        "description is empty"
+      ]
+    },
+    {
+      "row": 588,
+      "title": "",
+      "notes": [
+        "location \"Uzbekistan/Kazakhstan/Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
+        "description is empty"
+      ]
+    },
+    {
+      "row": 589,
+      "title": "",
+      "notes": [
+        "location \"Uzbekistan/Kazakhstan/Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
         "description is empty"
       ]
     }
