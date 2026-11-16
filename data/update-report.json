@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-15T05:54-05:00",
-  "rowsInSheet": 584,
+  "updatedAt": "2026-11-16T06:18-05:00",
+  "rowsInSheet": 587,
   "hidden": 0,
-  "published": 552,
+  "published": 556,
   "heldBack": [
     {
       "row": 51,
@@ -183,35 +183,23 @@
       ]
     },
     {
-      "row": 469,
+      "row": 470,
       "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 529,
+      "row": 535,
       "title": "Chinese Firm Signs EPC Contract for 700 MW Solar Project in Kazakhstan",
       "problems": [
         "no actor ticked (Russia, China, USA or S7)"
       ]
     },
     {
-      "row": 532,
+      "row": 538,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
-        "link is empty"
-      ]
-    },
-    {
-      "row": 586,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"Country occuring in ->\" is not 1-4",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
         "link is empty"
       ]
     },
@@ -221,8 +209,7 @@
       "problems": [
         "date is empty",
         "no sector (Type) chosen",
-        "severity \"Water\" is not 1-4",
-        "no Central Asian country in Location",
+        "severity \"Country occuring in ->\" is not 1-4",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
         "link is empty"
@@ -257,17 +244,9 @@
   ],
   "notes": [
     {
-      "row": 586,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
       "row": 587,
       "title": "",
       "notes": [
-        "location \"Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
         "description is empty"
       ]
     },
