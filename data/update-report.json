@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-16T06:18-05:00",
-  "rowsInSheet": 587,
+  "updatedAt": "2026-11-17T09:25-05:00",
+  "rowsInSheet": 597,
   "hidden": 0,
-  "published": 556,
+  "published": 565,
   "heldBack": [
     {
       "row": 51,
@@ -190,13 +190,6 @@
       ]
     },
     {
-      "row": 535,
-      "title": "Chinese Firm Signs EPC Contract for 700 MW Solar Project in Kazakhstan",
-      "problems": [
-        "no actor ticked (Russia, China, USA or S7)"
-      ]
-    },
-    {
       "row": 538,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
@@ -204,7 +197,7 @@
       ]
     },
     {
-      "row": 587,
+      "row": 595,
       "title": "",
       "problems": [
         "date is empty",
@@ -216,20 +209,19 @@
       ]
     },
     {
-      "row": 588,
+      "row": 596,
       "title": "",
       "problems": [
         "date is empty",
         "no sector (Type) chosen",
         "severity \"Agriculture/industry\" is not 1-4",
-        "no Central Asian country in Location",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
         "link is empty"
       ]
     },
     {
-      "row": 589,
+      "row": 597,
       "title": "",
       "problems": [
         "date is empty",
@@ -240,18 +232,51 @@
         "title is empty",
         "link is empty"
       ]
+    },
+    {
+      "row": 600,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"Ask Dania about how to score steps away from integration\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 601,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"EXAMPLE: Kazakhstan egg import ban\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
     }
   ],
   "notes": [
     {
-      "row": 587,
+      "row": 595,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 588,
+      "row": 596,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 597,
       "title": "",
       "notes": [
         "location \"Uzbekistan/Kazakhstan/Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
@@ -259,10 +284,16 @@
       ]
     },
     {
-      "row": 589,
+      "row": 600,
       "title": "",
       "notes": [
-        "location \"Uzbekistan/Kazakhstan/Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
+        "description is empty"
+      ]
+    },
+    {
+      "row": 601,
+      "title": "",
+      "notes": [
         "description is empty"
       ]
     }
