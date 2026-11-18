@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-17T09:25-05:00",
-  "rowsInSheet": 597,
+  "updatedAt": "2026-11-18T08:59-05:00",
+  "rowsInSheet": 609,
   "hidden": 0,
-  "published": 565,
+  "published": 575,
   "heldBack": [
     {
       "row": 51,
@@ -183,21 +183,33 @@
       ]
     },
     {
-      "row": 470,
+      "row": 471,
       "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 538,
+      "row": 542,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
         "link is empty"
       ]
     },
     {
-      "row": 595,
+      "row": 604,
+      "title": "",
+      "problems": [
+        "no sector (Type) chosen",
+        "severity is empty",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 607,
       "title": "",
       "problems": [
         "date is empty",
@@ -209,19 +221,33 @@
       ]
     },
     {
-      "row": 596,
+      "row": 608,
       "title": "",
       "problems": [
         "date is empty",
         "no sector (Type) chosen",
-        "severity \"Agriculture/industry\" is not 1-4",
+        "severity \"Water\" is not 1-4",
+        "Location is empty",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
         "link is empty"
       ]
     },
     {
-      "row": 597,
+      "row": 609,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"Agriculture/industry\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 610,
       "title": "",
       "problems": [
         "date is empty",
@@ -234,7 +260,7 @@
       ]
     },
     {
-      "row": 600,
+      "row": 613,
       "title": "",
       "problems": [
         "date is empty",
@@ -247,7 +273,7 @@
       ]
     },
     {
-      "row": 601,
+      "row": 614,
       "title": "",
       "problems": [
         "date is empty",
@@ -262,36 +288,50 @@
   ],
   "notes": [
     {
-      "row": 595,
+      "row": 604,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 596,
+      "row": 607,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 597,
-      "title": "",
-      "notes": [
-        "location \"Uzbekistan/Kazakhstan/Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
-        "description is empty"
-      ]
-    },
-    {
-      "row": 600,
+      "row": 608,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 601,
+      "row": 609,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 610,
+      "title": "",
+      "notes": [
+        "location \"Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
+        "description is empty"
+      ]
+    },
+    {
+      "row": 613,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 614,
       "title": "",
       "notes": [
         "description is empty"
