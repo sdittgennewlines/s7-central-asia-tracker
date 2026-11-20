@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-19T08:08-05:00",
-  "rowsInSheet": 612,
+  "updatedAt": "2026-11-20T06:52-05:00",
+  "rowsInSheet": 618,
   "hidden": 0,
   "published": 578,
   "heldBack": [
@@ -209,7 +209,7 @@
       ]
     },
     {
-      "row": 610,
+      "row": 611,
       "title": "",
       "problems": [
         "date is empty",
@@ -221,7 +221,7 @@
       ]
     },
     {
-      "row": 611,
+      "row": 612,
       "title": "",
       "problems": [
         "date is empty",
@@ -234,7 +234,7 @@
       ]
     },
     {
-      "row": 612,
+      "row": 613,
       "title": "",
       "problems": [
         "date is empty",
@@ -247,7 +247,7 @@
       ]
     },
     {
-      "row": 613,
+      "row": 614,
       "title": "",
       "problems": [
         "date is empty",
@@ -260,7 +260,7 @@
       ]
     },
     {
-      "row": 616,
+      "row": 617,
       "title": "",
       "problems": [
         "date is empty",
@@ -273,12 +273,90 @@
       ]
     },
     {
-      "row": 617,
+      "row": 618,
       "title": "",
       "problems": [
         "date is empty",
         "no sector (Type) chosen",
         "severity \"EXAMPLE: Kazakhstan egg import ban\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 620,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"Also note to self: add the latest China-Central Asia monitor stories\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 621,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"https://washingtonier-my.sharepoint.com/:w:/g/personal/ksartorius_newlinesinstitute_org/IQDDq4hDWO9rTIO3zov4J4vBAVMlydJGpoQ3c3HR_H4xbFA?e=vrNt1A&wdExp=TEAMS-TREATMENT&web=1&isSPOFile=1&ovuser=734d82dd-ffe3-49fe-98c5-93ebc94281b1%2Cksartorius%40newlinesinstitute.org&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtV2ViIiwiQXBwVmVyc2lvbiI6IjE0MTUvMjYxMDE1MTUyMjAiLCJIYXNGZWRlcmF0ZWRVc2VyIjpmYWxzZX0%3D\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 622,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"Also add the following stories\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 623,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"https://english.pravda.ru/news/world/173225-kazakhstan-china-cellular-immunotherapy-cancer-cooperation/\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 624,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"https://caspianpost.com/kazakhstan/china-kazakhstan-consider-joint-institute-for-smarter-roads\" is not 1-4",
+        "Location is empty",
+        "no actor ticked (Russia, China, USA or S7)",
+        "title is empty",
+        "link is empty"
+      ]
+    },
+    {
+      "row": 625,
+      "title": "",
+      "problems": [
+        "date is empty",
+        "no sector (Type) chosen",
+        "severity \"https://check-point.kz/publication?id=11385\" is not 1-4",
         "Location is empty",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
@@ -295,13 +373,6 @@
       ]
     },
     {
-      "row": 610,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
       "row": 611,
       "title": "",
       "notes": [
@@ -319,19 +390,68 @@
       "row": 613,
       "title": "",
       "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 614,
+      "title": "",
+      "notes": [
         "location \"Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
         "description is empty"
       ]
     },
     {
-      "row": 616,
+      "row": 617,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 617,
+      "row": 618,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 620,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 621,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 622,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 623,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 624,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 625,
       "title": "",
       "notes": [
         "description is empty"
