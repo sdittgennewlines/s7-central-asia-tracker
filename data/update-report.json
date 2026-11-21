@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-20T06:52-05:00",
-  "rowsInSheet": 618,
+  "updatedAt": "2026-11-21T04:55-05:00",
+  "rowsInSheet": 634,
   "hidden": 0,
-  "published": 578,
+  "published": 595,
   "heldBack": [
     {
       "row": 51,
@@ -183,33 +183,21 @@
       ]
     },
     {
-      "row": 471,
+      "row": 473,
       "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 543,
+      "row": 546,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
         "link is empty"
       ]
     },
     {
-      "row": 607,
-      "title": "",
-      "problems": [
-        "no sector (Type) chosen",
-        "severity is empty",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
-    },
-    {
-      "row": 611,
+      "row": 628,
       "title": "",
       "problems": [
         "date is empty",
@@ -221,7 +209,7 @@
       ]
     },
     {
-      "row": 612,
+      "row": 629,
       "title": "",
       "problems": [
         "date is empty",
@@ -234,7 +222,7 @@
       ]
     },
     {
-      "row": 613,
+      "row": 630,
       "title": "",
       "problems": [
         "date is empty",
@@ -247,7 +235,7 @@
       ]
     },
     {
-      "row": 614,
+      "row": 631,
       "title": "",
       "problems": [
         "date is empty",
@@ -260,7 +248,7 @@
       ]
     },
     {
-      "row": 617,
+      "row": 634,
       "title": "",
       "problems": [
         "date is empty",
@@ -273,7 +261,7 @@
       ]
     },
     {
-      "row": 618,
+      "row": 635,
       "title": "",
       "problems": [
         "date is empty",
@@ -286,7 +274,7 @@
       ]
     },
     {
-      "row": 620,
+      "row": 637,
       "title": "",
       "problems": [
         "date is empty",
@@ -299,7 +287,7 @@
       ]
     },
     {
-      "row": 621,
+      "row": 638,
       "title": "",
       "problems": [
         "date is empty",
@@ -312,7 +300,7 @@
       ]
     },
     {
-      "row": 622,
+      "row": 639,
       "title": "",
       "problems": [
         "date is empty",
@@ -325,7 +313,7 @@
       ]
     },
     {
-      "row": 623,
+      "row": 640,
       "title": "",
       "problems": [
         "date is empty",
@@ -338,7 +326,7 @@
       ]
     },
     {
-      "row": 624,
+      "row": 641,
       "title": "",
       "problems": [
         "date is empty",
@@ -351,7 +339,7 @@
       ]
     },
     {
-      "row": 625,
+      "row": 642,
       "title": "",
       "problems": [
         "date is empty",
@@ -366,35 +354,28 @@
   ],
   "notes": [
     {
-      "row": 607,
+      "row": 628,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 611,
+      "row": 629,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 612,
+      "row": 630,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 613,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 614,
+      "row": 631,
       "title": "",
       "notes": [
         "location \"Kyrgyzstan/Tajikistan/Turkmenistan\" is not one of the five countries and was left out",
@@ -402,56 +383,56 @@
       ]
     },
     {
-      "row": 617,
+      "row": 634,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 618,
+      "row": 635,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 620,
+      "row": 637,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 621,
+      "row": 638,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 622,
+      "row": 639,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 623,
+      "row": 640,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 624,
+      "row": 641,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 625,
+      "row": 642,
       "title": "",
       "notes": [
         "description is empty"
