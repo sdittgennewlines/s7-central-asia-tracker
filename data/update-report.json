@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-21T04:55-05:00",
-  "rowsInSheet": 634,
+  "updatedAt": "2026-11-22T06:38-05:00",
+  "rowsInSheet": 629,
   "hidden": 0,
-  "published": 595,
+  "published": 596,
   "heldBack": [
     {
       "row": 51,
@@ -190,7 +190,7 @@
       ]
     },
     {
-      "row": 546,
+      "row": 547,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
         "link is empty"
@@ -201,7 +201,7 @@
       "title": "",
       "problems": [
         "date is empty",
-        "no sector (Type) chosen",
+        "unknown sector \"October-November\"",
         "severity \"Country occuring in ->\" is not 1-4",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
@@ -272,84 +272,6 @@
         "title is empty",
         "link is empty"
       ]
-    },
-    {
-      "row": 637,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"Also note to self: add the latest China-Central Asia monitor stories\" is not 1-4",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
-    },
-    {
-      "row": 638,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"https://washingtonier-my.sharepoint.com/:w:/g/personal/ksartorius_newlinesinstitute_org/IQDDq4hDWO9rTIO3zov4J4vBAVMlydJGpoQ3c3HR_H4xbFA?e=vrNt1A&wdExp=TEAMS-TREATMENT&web=1&isSPOFile=1&ovuser=734d82dd-ffe3-49fe-98c5-93ebc94281b1%2Cksartorius%40newlinesinstitute.org&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtV2ViIiwiQXBwVmVyc2lvbiI6IjE0MTUvMjYxMDE1MTUyMjAiLCJIYXNGZWRlcmF0ZWRVc2VyIjpmYWxzZX0%3D\" is not 1-4",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
-    },
-    {
-      "row": 639,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"Also add the following stories\" is not 1-4",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
-    },
-    {
-      "row": 640,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"https://english.pravda.ru/news/world/173225-kazakhstan-china-cellular-immunotherapy-cancer-cooperation/\" is not 1-4",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
-    },
-    {
-      "row": 641,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"https://caspianpost.com/kazakhstan/china-kazakhstan-consider-joint-institute-for-smarter-roads\" is not 1-4",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
-    },
-    {
-      "row": 642,
-      "title": "",
-      "problems": [
-        "date is empty",
-        "no sector (Type) chosen",
-        "severity \"https://check-point.kz/publication?id=11385\" is not 1-4",
-        "Location is empty",
-        "no actor ticked (Russia, China, USA or S7)",
-        "title is empty",
-        "link is empty"
-      ]
     }
   ],
   "notes": [
@@ -391,48 +313,6 @@
     },
     {
       "row": 635,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 637,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 638,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 639,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 640,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 641,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 642,
       "title": "",
       "notes": [
         "description is empty"
