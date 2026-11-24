@@ -1,6 +1,6 @@
 /**
  * util.js: small, dependency-free helpers shared by every component.
- * Nothing here knows about the tracker's data model.
+ * Nothing here knows about the monitor's data model.
  */
 
 export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

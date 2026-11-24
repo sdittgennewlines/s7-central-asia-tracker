@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-update_data.py: the nightly data update for the S7+ Central Asia Tracker.
+update_data.py: the nightly data update for the S7+ Central Asia Monitor.
 
 Downloads the "Incidents - Global" tab of the S7 + CAT Monitor Google Sheet
 as CSV, checks every row, and writes data/incidents.json for the website.

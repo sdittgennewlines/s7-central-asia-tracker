@@ -26,6 +26,16 @@
  *
  * downloadButton() returns the small "Download" button for a chart header.
  * The dialog renders into #exportRoot (index.html).
+ *
+ * WHERE THE POP-UP APPEARS
+ * It opens at the top of the visible screen. To make that reliable when the
+ * monitor sits inside another site's page, #exportRoot is moved to the end
+ * of <body> on start-up: a host page wrapper with a CSS transform (common in
+ * WordPress themes) would otherwise make "fixed" positioning relative to
+ * that wrapper, pushing the pop-up below the visible area. When the monitor
+ * is embedded in an iframe that grows to fit its content, "the visible
+ * screen" can't be known from inside, so the pop-up opens level with the
+ * button that was clicked instead.
  */
 import { CONFIG } from "../config.js";
 import { esc } from "./util.js";
@@ -35,6 +45,7 @@ import { makeXlsx } from "./lib/xlsx.js";
 let current = null;   // the open spec
 let lastFocus = null; // element to return focus to on close
 const root = () => document.getElementById("exportRoot");
+const framed = () => window.parent !== window; // embedded in an iframe
 
 /** CSV text (RFC 4180: quote fields containing , " or line breaks). */
 export function toCsv(columns, rows) {
@@ -70,7 +81,13 @@ function run(format) {
 
 /** Wire the dialog's clicks and the Escape key once (called from main.js). */
 export function initExportDialog() {
-  root().addEventListener("click", (ev) => {
+  // Lift the pop-up's container out of the page layout (see top of file).
+  // It keeps the .s7cat class so the monitor's styles still apply.
+  const el = root();
+  el.classList.add("s7cat", "s7cat-portal");
+  document.body.appendChild(el);
+
+  el.addEventListener("click", (ev) => {
     const t = ev.target;
     if (t.closest("[data-export-close]")) return close();
     const opt = t.closest("[data-format]");
@@ -104,7 +121,18 @@ export function openExport(spec) {
         </div>
       </div>
     </div>`;
-  root().querySelector(".export-opt").focus();
+  // Embedded in an auto-height iframe: line the pop-up up with the button
+  // that opened it (the reader is looking there), kept inside the page.
+  const overlay = root().querySelector(".overlay");
+  if (framed()) {
+    const dialog = overlay.querySelector(".dialog");
+    const docH = document.documentElement.scrollHeight;
+    const btnTop = (lastFocus?.getBoundingClientRect().top ?? 0) + window.scrollY;
+    overlay.classList.add("is-framed");
+    overlay.style.height = `${docH}px`;
+    dialog.style.marginTop = `${Math.max(16, Math.min(btnTop - 40, docH - dialog.offsetHeight - 16))}px`;
+  }
+  root().querySelector(".export-opt").focus({ preventScroll: framed() });
 }
 
 /** The small "Download" button placed in a chart's header. */

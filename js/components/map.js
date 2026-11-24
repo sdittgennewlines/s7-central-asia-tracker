@@ -133,7 +133,7 @@ export function createMap(ctx) {
     const f = state.filters;
     const { byCountry, total } = tally(f);
 
-    if (!geo) { el.innerHTML = `<p class="map-fallback">The map could not load. The rest of the tracker is unaffected.</p>`; return; }
+    if (!geo) { el.innerHTML = `<p class="map-fallback">The map could not load. The rest of the monitor is unaffected.</p>`; return; }
 
     const svg = [`<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs><clipPath id="mapClip"><rect width="${W}" height="${H}"/></clipPath></defs><g clip-path="url(#mapClip)">`];
     // 1. Land: neighbours, then the five tracked countries (selected last, on top).

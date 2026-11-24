@@ -1,4 +1,4 @@
-# Nightly data update for the S7+ Central Asia Tracker.
+# Nightly data update for the S7+ Central Asia Monitor.
 #
 # Every night, shortly after midnight New York time, this job:
 #   1. downloads the "Incidents - Global" tab of the Google Sheet as CSV,
@@ -142,7 +142,7 @@ jobs:
           from email.message import EmailMessage
           reason = open("update.log").read() if os.path.exists("update.log") else "The job failed before the checks ran."
           msg = EmailMessage()
-          msg["Subject"] = "S7+ tracker: nightly data update stopped"
+          msg["Subject"] = "S7+ monitor: nightly data update stopped"
           msg["From"] = os.environ["MAIL_USERNAME"]
           msg["To"] = os.environ["ALERT_EMAIL"]
           msg.set_content(f"The nightly update was stopped; the site still shows the previous day's data.\n\n{reason}\n\nRun log: {os.environ['RUN_URL']}\n")

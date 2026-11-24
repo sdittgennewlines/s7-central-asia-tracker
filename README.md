@@ -1,4 +1,4 @@
-# S7+ Central Asia Geopolitical Tracker
+# S7+ Central Asia Geopolitical Monitor
 
 A static web page for the Central Asia Center at the New Lines Institute. It tracks Russian influence, Chinese influence, U.S. engagement and S7+ integration across Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan and Uzbekistan, using incidents logged by analysts in the "S7 + CAT Monitor" Google Sheet.
 
@@ -141,7 +141,7 @@ The job then fails and alerts the owner. It opens an issue labelled `data-update
 
 ```html
 <iframe id="s7cat" src="https://sdittgennewlines.github.io/s7-central-asia-tracker/?embed=1"
-        style="width:100%;border:0;min-height:1400px" title="S7+ Central Asia Geopolitical Tracker"></iframe>
+        style="width:100%;border:0;min-height:1400px" title="S7+ Central Asia Geopolitical Monitor"></iframe>
 <script>
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "s7cat:height")
@@ -150,7 +150,7 @@ The job then fails and alerts the owner. It opens an issue labelled `data-update
 </script>
 ```
 
-`?embed=1` hides the tracker's own header and footer. The script resizes the frame to fit.
+`?embed=1` hides the monitor's own header and footer. The script resizes the frame to fit.
 
 **Option B: host it directly.** Copy the folder to the New Lines server, for example `/monitors/s7-central-asia-tracker/`.
 

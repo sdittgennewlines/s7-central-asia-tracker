@@ -33,11 +33,11 @@ window.s7Started = true; // tells the safety net in index.html that scripts load
 
 const root = document.querySelector(".s7cat");
 
-// Embedded mode (?embed=1 or #embed) hides the tracker's own header and
+// Embedded mode (?embed=1 or #embed) hides the monitor's own header and
 // footer, for use inside an iframe on the New Lines site.
 if (/(^|[?&])embed=1/.test(location.search) || location.hash === "#embed") root.classList.add("is-embed");
 
-/** Tell a parent page (iframe host) how tall the tracker is. */
+/** Tell a parent page (iframe host) how tall the monitor is. */
 function postHeight() {
   if (window.parent === window) return;
   try { window.parent.postMessage({ type: "s7cat:height", height: document.documentElement.scrollHeight }, "*"); } catch { /* ignore */ }

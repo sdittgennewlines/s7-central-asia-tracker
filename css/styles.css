@@ -1,6 +1,6 @@
 /* ==========================================================================
-   S7+ Central Asia Geopolitical Tracker: styles
-   Everything is scoped under .s7cat so the tracker can sit inside a host
+   S7+ Central Asia Geopolitical Monitor: styles
+   Everything is scoped under .s7cat so the monitor can sit inside a host
    page without leaking styles. Sections follow the page from top to bottom.
    ========================================================================== */
 
@@ -262,8 +262,12 @@ body { margin: 0; background: #fff; }
 .s7cat .dl-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-size: 12.5px; font-weight: 500; letter-spacing: .3px; cursor: pointer; flex: 0 0 auto; }
 .s7cat .dl-btn:hover { border-color: var(--ink); }
 .s7cat .cell-chart.is-empty #indexChartDownload { display: none; }
-.s7cat .overlay { position: fixed; inset: 0; z-index: 60; background: rgba(27, 23, 37, .55); display: flex; align-items: center; justify-content: center; padding: 24px; }
-.s7cat .dialog { position: relative; width: 100%; max-width: 600px; max-height: 100%; overflow-y: auto; background: #fff; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; }
+/* The pop-up opens near the top of the visible screen (not centred), above
+   anything a host page might pin there. See js/exportDialog.js. */
+.s7cat-portal { position: static; }
+.s7cat .overlay { position: fixed; inset: 0; z-index: 2147483000; background: rgba(27, 23, 37, .55); display: flex; align-items: flex-start; justify-content: center; padding: max(24px, 8vh) 24px 24px; overflow-y: auto; }
+.s7cat .overlay.is-framed { position: absolute; top: 0; left: 0; right: 0; bottom: auto; padding-top: 0; overflow: visible; }
+.s7cat .dialog { position: relative; width: 100%; max-width: 600px; background: #fff; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; }
 .s7cat .dialog .x { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border: 0; background: none; cursor: pointer; font-size: 26px; color: var(--ink); }
 .s7cat .dialog-head { display: flex; flex-direction: column; gap: 6px; padding-right: 40px; }
 .s7cat .dialog h2 { font-size: 26px; line-height: 1.3; }

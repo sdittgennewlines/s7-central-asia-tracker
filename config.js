@@ -1,5 +1,5 @@
 /**
- * S7+ Central Asia Geopolitical Tracker: site configuration.
+ * S7+ Central Asia Geopolitical Monitor: site configuration.
  *
  * This is the one file to edit when data sources, countries, sectors or
  * colours change. Everything else reads from here.
@@ -71,7 +71,7 @@ export const CONFIG = {
 
   // Printed on every downloaded image and Excel file.
   copyright: "© 2026 The New Lines Institute",
-  credit: "Central Asia Center · S7+ Central Asia Geopolitical Tracker",
+  credit: "Central Asia Center · S7+ Central Asia Geopolitical Monitor",
 
   /* ------------------------------------------------------------ severity */
 
