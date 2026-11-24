@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-23T04:06-05:00",
-  "rowsInSheet": 629,
+  "updatedAt": "2026-11-24T01:04-05:00",
+  "rowsInSheet": 657,
   "hidden": 0,
-  "published": 596,
+  "published": 624,
   "heldBack": [
     {
       "row": 51,
@@ -147,21 +147,21 @@
       ]
     },
     {
-      "row": 394,
+      "row": 395,
       "title": "Russia, Kyrgyzstan Expand Interior Ministry Offices",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 395,
+      "row": 396,
       "title": "Russia Emphasizes Tajik-Afghan Border Security",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 398,
+      "row": 399,
       "title": "Uzbek Court Sentences Citizen for Joining Russia's War in Ukraine",
       "problems": [
         "no sector (Type) chosen",
@@ -169,35 +169,35 @@
       ]
     },
     {
-      "row": 399,
+      "row": 400,
       "title": "Russia, Uzbekistan Increase Railway Digitalization",
       "problems": [
         "no actor ticked (Russia, China, USA or S7)"
       ]
     },
     {
-      "row": 414,
+      "row": 415,
       "title": "Kyrgyzstan's Economy Rises 11% in 2025",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 473,
+      "row": 472,
       "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 547,
+      "row": 545,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
         "link is empty"
       ]
     },
     {
-      "row": 628,
+      "row": 655,
       "title": "",
       "problems": [
         "date is empty",
@@ -209,7 +209,7 @@
       ]
     },
     {
-      "row": 629,
+      "row": 656,
       "title": "",
       "problems": [
         "date is empty",
@@ -222,7 +222,7 @@
       ]
     },
     {
-      "row": 630,
+      "row": 657,
       "title": "",
       "problems": [
         "date is empty",
@@ -235,20 +235,20 @@
       ]
     },
     {
-      "row": 631,
+      "row": 658,
       "title": "",
       "problems": [
         "date is empty",
         "no sector (Type) chosen",
         "severity \"Transport\" is not 1-4",
-        "no Central Asian country in Location",
+        "Location is empty",
         "no actor ticked (Russia, China, USA or S7)",
         "title is empty",
         "link is empty"
       ]
     },
     {
-      "row": 634,
+      "row": 661,
       "title": "",
       "problems": [
         "date is empty",
@@ -261,7 +261,7 @@
       ]
     },
     {
-      "row": 635,
+      "row": 662,
       "title": "",
       "problems": [
         "date is empty",
@@ -276,43 +276,42 @@
   ],
   "notes": [
     {
-      "row": 628,
+      "row": 655,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 629,
+      "row": 656,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 630,
+      "row": 657,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 631,
-      "title": "",
-      "notes": [
-        "location \"Kyrgyzstan/Turkmenistan\" is not one of the five countries and was left out",
-        "description is empty"
-      ]
-    },
-    {
-      "row": 634,
+      "row": 658,
       "title": "",
       "notes": [
         "description is empty"
       ]
     },
     {
-      "row": 635,
+      "row": 661,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 662,
       "title": "",
       "notes": [
         "description is empty"
