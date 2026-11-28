@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-27T04:41-05:00",
-  "rowsInSheet": 663,
+  "updatedAt": "2026-11-28T06:46-05:00",
+  "rowsInSheet": 666,
   "hidden": 0,
-  "published": 630,
+  "published": 633,
   "heldBack": [
     {
       "row": 51,
@@ -183,21 +183,21 @@
       ]
     },
     {
-      "row": 472,
+      "row": 473,
       "title": "Proposed Mining Company Merger Opens Kazakhstan's Tungsten Business to US",
       "problems": [
         "no sector (Type) chosen"
       ]
     },
     {
-      "row": 545,
+      "row": 546,
       "title": "President Mirziyoyev Urges International Support for Central Asia in Climate Crisis",
       "problems": [
         "link is empty"
       ]
     },
     {
-      "row": 661,
+      "row": 664,
       "title": "",
       "problems": [
         "date is empty",
@@ -209,7 +209,7 @@
       ]
     },
     {
-      "row": 662,
+      "row": 665,
       "title": "",
       "problems": [
         "date is empty",
@@ -222,7 +222,7 @@
       ]
     },
     {
-      "row": 663,
+      "row": 666,
       "title": "",
       "problems": [
         "date is empty",
@@ -235,7 +235,7 @@
       ]
     },
     {
-      "row": 664,
+      "row": 667,
       "title": "",
       "problems": [
         "date is empty",
@@ -248,7 +248,7 @@
       ]
     },
     {
-      "row": 667,
+      "row": 670,
       "title": "",
       "problems": [
         "date is empty",
@@ -261,7 +261,7 @@
       ]
     },
     {
-      "row": 668,
+      "row": 671,
       "title": "",
       "problems": [
         "date is empty",
@@ -276,28 +276,21 @@
   ],
   "notes": [
     {
-      "row": 661,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 662,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
-      "row": 663,
-      "title": "",
-      "notes": [
-        "description is empty"
-      ]
-    },
-    {
       "row": 664,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 665,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 666,
       "title": "",
       "notes": [
         "description is empty"
@@ -311,7 +304,14 @@
       ]
     },
     {
-      "row": 668,
+      "row": 670,
+      "title": "",
+      "notes": [
+        "description is empty"
+      ]
+    },
+    {
+      "row": 671,
       "title": "",
       "notes": [
         "description is empty"
